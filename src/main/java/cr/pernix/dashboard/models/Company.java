@@ -9,14 +9,14 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
-@Table(name = "User", schema = "public")
+@Table(name = "Company", schema = "public")
 @XmlRootElement
-public class User {
+public class Company {
 
-    public User() {
+    public Company() {
     }
 
-    public User(int id) {
+    public Company(int id) {
         setId(id);
     }
 
@@ -43,39 +43,6 @@ public class User {
     public void setName(String name) {
         this.name = name;
     }
-        
-    @Column(name = "lastname")
-    private String lastname;
-    
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    @Column(name = "email")
-    private String email;
-    
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    @Column(name = "password")
-    private String password;
-    
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -84,8 +51,8 @@ public class User {
         if (o == null || getClass() != o.getClass())
             return false;
 
-        User user = (User) o;
-        if (id != user.id)
+        Company company = (Company) o;
+        if (id != company.id)
             return false;
         return true;
     }

@@ -22,7 +22,7 @@ public class UserResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllUsers() throws Exception {
-        List<User> result = UserService.getInstance().getAllUsers();
+        List<User> result = UserService.getInstance().get();
         GenericEntity<List<User>> list = new GenericEntity<List<User>>(result) {
         };
         return Response.ok(list).build();
@@ -31,26 +31,26 @@ public class UserResource {
     @GET
     @Path("/{id}")
     public Response getUser(@PathParam("id") int id) throws Exception {
-        User user = UserService.getInstance().getUser(id);
+        User user = UserService.getInstance().get(id);
         return Response.ok(user).build();
     }
 
     @POST
     public Response createUser(User user) throws Exception {
-        UserService.getInstance().saveOrUpdateUser(user);
+        UserService.getInstance().save(user);
         return Response.ok().build();
     }
 
     @PUT
     public Response update(User user) throws Exception {
-        UserService.getInstance().saveOrUpdateUser(user);
+        UserService.getInstance().save(user);
         return Response.ok().build();
     }
 
     @DELETE
     @Path("/{id}")
     public Response deleteUser(@PathParam("id") int id) throws Exception {
-        UserService.getInstance().deleteUser(id);
+        UserService.getInstance().delete(id);
         return Response.ok().build();
     }
 }

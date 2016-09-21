@@ -10,67 +10,67 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
 
-import cr.pernix.dashboard.models.User;
+import cr.pernix.dashboard.models.Manager;
 import cr.pernix.dashboard.utils.HibernateUtil;
 
-public class UserService {
-    private static volatile UserService instance = null;
-    private static final Log LOGGER = LogFactory.getLog(UserService.class);
+public class ManagerService {
+    private static volatile ManagerService instance = null;
+    private static final Log LOGGER = LogFactory.getLog(ManagerService.class);
 
-    private UserService() {
+    private ManagerService() {
     }
 
-    public static synchronized UserService getInstance() {
+    public static synchronized ManagerService getInstance() {
         if (instance == null) {
-            instance = new UserService();
+            instance = new ManagerService();
         }
         return instance;
     }
 
-    public List<User> get() {
+    public List<Manager> get() {
         return get(0, 0);
     }
 
-    public List<User> get(int firstResult, int maxResult) {
-        List<User> users = new ArrayList<>();
+    public List<Manager> get(int firstResult, int maxResult) {
+        List<Manager> managers = new ArrayList<>();
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transaction = session.getTransaction();
         transaction.begin();
         if (transaction.getStatus().equals(TransactionStatus.NOT_ACTIVE))
             LOGGER.debug(" >>> Transaction close.");
-        Query query = session.createQuery("from User");
+        Query query = session.createQuery("from Manager");
         query.setFirstResult(firstResult);
         query.setMaxResults(maxResult);
         @SuppressWarnings("unchecked")
-        List<User> allUsers = query.list();
+        List<Manager> allManagers = query.list();
         transaction.commit();
-        for (Object userObject : allUsers) {
-            User user = (User) userObject;
-            users.add(user);
+        for (Object userObject : allManagers) {
+            Manager manager = (Manager) userObject;
+            managers.add(manager);
         }
-        return users;
+        return managers;
     }
 
-    public User get(int id) {
+    public Manager get(int id) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
         transaction.begin();
-        User user = (User) session.get(User.class, id);
+        Manager manager = (Manager) session.get(Manager.class, id);
         transaction.commit();
-        return user;
+        return manager;
     }
 
-    public void save(User user) {
+    public void save(Manager manager) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        session.saveOrUpdate(user);
+        session.saveOrUpdate(manager);
         transaction.commit();
     }
 
-    public User delete(int id) {
+    public Manager delete(int id) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        User user = get(id);
-        if (user != null) {
+        Manager manager = get(id);
+        if (manager != null) {
             if (!session.isOpen()) {
                 LOGGER.debug(" >>> Session close.");
                 LOGGER.debug(" >>> Reopening session.");
@@ -80,9 +80,9 @@ public class UserService {
             transaction.begin();
             if (transaction.getStatus().equals(TransactionStatus.NOT_ACTIVE))
                 LOGGER.debug(" >>> Transaction close.");
-            session.delete(user);
+            session.delete(manager);
             transaction.commit();
         }
-        return user;
+        return manager;
     }
 }

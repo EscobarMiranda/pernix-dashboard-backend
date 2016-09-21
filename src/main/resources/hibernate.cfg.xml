@@ -20,6 +20,8 @@
              'update'       -> update the schema, 
              'validate'     -> validates the schema, no changes on DB -->
         <property name="hibernate.hbm2ddl.auto">create</property>
+        <mapping class="cr.pernix.dashboard.models.Company"/>
+        <mapping class="cr.pernix.dashboard.models.Manager"/>
         <mapping class="cr.pernix.dashboard.models.User"/>
     </session-factory>
 </hibernate-configuration>

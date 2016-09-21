@@ -19,6 +19,9 @@ import cr.pernix.dashboard.services.UserService;
 public class UserResourceTest extends JerseyTest {
 
     private final String NAME = "Kevin";
+    private final String LASTNAME = "Escobar Miranda";
+    private final String EMAIL = "kescobar@pernix.cr";
+    private final String PASSWORD = "password";
 
     private UserService userService = UserService.getInstance();
 
@@ -27,7 +30,10 @@ public class UserResourceTest extends JerseyTest {
         for (; count > 0; count--) {
             User testUser = new User();
             testUser.setName(NAME);
-            userService.saveOrUpdateUser(testUser);
+            testUser.setLastname(LASTNAME);
+            testUser.setEmail(EMAIL);
+            testUser.setPassword(PASSWORD);
+            userService.save(testUser);
             testUsers.add(testUser);
         }
         return testUsers;
@@ -59,7 +65,7 @@ public class UserResourceTest extends JerseyTest {
         Assert.assertEquals(200, response.getStatus());
         User user = response.readEntity(User.class);
         Assert.assertTrue("Object do not match", user.equals(toCompare));
-        userService.deleteUser(toCompare.getId());
+        userService.delete(toCompare.getId());
     }
 
     @Test
@@ -70,7 +76,7 @@ public class UserResourceTest extends JerseyTest {
         String path = "user/%d";
         final Response response = target().path(String.format(path, toDelete.getId())).request().delete();
         Assert.assertEquals(200, response.getStatus());
-        Assert.assertNull("Object still persist", userService.getUser(toDelete.getId()));
+        Assert.assertNull("Object still persist", userService.get(toDelete.getId()));
     }
 
     @Test
@@ -81,7 +87,7 @@ public class UserResourceTest extends JerseyTest {
         toUpdate.setName("Modified Name");
         final Response response = target().path("user").request().put(Entity.json(toUpdate), Response.class);
         Assert.assertEquals(200, response.getStatus());
-        User modifiedUser = UserService.getInstance().getUser(toUpdate.getId());
+        User modifiedUser = UserService.getInstance().get(toUpdate.getId());
         Assert.assertTrue("Not the same object", modifiedUser.equals(toUpdate));
         Assert.assertNotEquals("Name not modified", NAME, modifiedUser.getName());
     }

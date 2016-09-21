@@ -10,67 +10,67 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
 
-import cr.pernix.dashboard.models.User;
+import cr.pernix.dashboard.models.Company;
 import cr.pernix.dashboard.utils.HibernateUtil;
 
-public class UserService {
-    private static volatile UserService instance = null;
-    private static final Log LOGGER = LogFactory.getLog(UserService.class);
+public class CompanyService {
+    private static volatile CompanyService instance = null;
+    private static final Log LOGGER = LogFactory.getLog(CompanyService.class);
 
-    private UserService() {
+    private CompanyService() {
     }
 
-    public static synchronized UserService getInstance() {
+    public static synchronized CompanyService getInstance() {
         if (instance == null) {
-            instance = new UserService();
+            instance = new CompanyService();
         }
         return instance;
     }
 
-    public List<User> get() {
+    public List<Company> get() {
         return get(0, 0);
     }
 
-    public List<User> get(int firstResult, int maxResult) {
-        List<User> users = new ArrayList<>();
+    public List<Company> get(int firstResult, int maxResult) {
+        List<Company> companies = new ArrayList<>();
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transaction = session.getTransaction();
         transaction.begin();
         if (transaction.getStatus().equals(TransactionStatus.NOT_ACTIVE))
             LOGGER.debug(" >>> Transaction close.");
-        Query query = session.createQuery("from User");
+        Query query = session.createQuery("from Company");
         query.setFirstResult(firstResult);
         query.setMaxResults(maxResult);
         @SuppressWarnings("unchecked")
-        List<User> allUsers = query.list();
+        List<Company> allCompanies = query.list();
         transaction.commit();
-        for (Object userObject : allUsers) {
-            User user = (User) userObject;
-            users.add(user);
+        for (Object userObject : allCompanies) {
+            Company company = (Company) userObject;
+            companies.add(company);
         }
-        return users;
+        return companies;
     }
 
-    public User get(int id) {
+    public Company get(int id) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
         transaction.begin();
-        User user = (User) session.get(User.class, id);
+        Company company = (Company) session.get(Company.class, id);
         transaction.commit();
-        return user;
+        return company;
     }
 
-    public void save(User user) {
+    public void save(Company company) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        session.saveOrUpdate(user);
+        session.saveOrUpdate(company);
         transaction.commit();
     }
 
-    public User delete(int id) {
+    public Company delete(int id) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        User user = get(id);
-        if (user != null) {
+        Company company = get(id);
+        if (company != null) {
             if (!session.isOpen()) {
                 LOGGER.debug(" >>> Session close.");
                 LOGGER.debug(" >>> Reopening session.");
@@ -80,9 +80,9 @@ public class UserService {
             transaction.begin();
             if (transaction.getStatus().equals(TransactionStatus.NOT_ACTIVE))
                 LOGGER.debug(" >>> Transaction close.");
-            session.delete(user);
+            session.delete(company);
             transaction.commit();
         }
-        return user;
+        return company;
     }
 }

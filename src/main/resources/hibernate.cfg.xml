@@ -23,5 +23,6 @@
         <mapping class="cr.pernix.dashboard.models.Company"/>
         <mapping class="cr.pernix.dashboard.models.Manager"/>
         <mapping class="cr.pernix.dashboard.models.User"/>
+        <mapping class="cr.pernix.dashboard.models.Metric"/>
     </session-factory>
 </hibernate-configuration>

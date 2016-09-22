@@ -22,7 +22,8 @@
         <property name="hibernate.hbm2ddl.auto">create</property>
         <mapping class="cr.pernix.dashboard.models.Company"/>
         <mapping class="cr.pernix.dashboard.models.Manager"/>
-        <mapping class="cr.pernix.dashboard.models.User"/>
         <mapping class="cr.pernix.dashboard.models.Metric"/>
+        <mapping class="cr.pernix.dashboard.models.User"/>
+        <mapping class="cr.pernix.dashboard.models.UserType"/>
     </session-factory>
 </hibernate-configuration>

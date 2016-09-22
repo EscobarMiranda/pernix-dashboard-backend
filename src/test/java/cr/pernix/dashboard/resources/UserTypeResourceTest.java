@@ -10,7 +10,6 @@ import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 

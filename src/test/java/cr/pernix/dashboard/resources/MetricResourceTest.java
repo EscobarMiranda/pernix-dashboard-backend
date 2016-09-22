@@ -49,6 +49,9 @@ public class MetricResourceTest extends JerseyTest {
         List<Metric> metricsList = response.readEntity(new GenericType<List<Metric>>() {
         });
         Assert.assertEquals(testMetric.size(), metricsList.size());
+        for(Metric metric: metricsList) {
+            metricService.delete(metric.getId());
+        }
     }
 
     @Test
@@ -86,5 +89,6 @@ public class MetricResourceTest extends JerseyTest {
         Metric modifiedMetric = MetricService.getInstance().get(toUpdate.getId());
         Assert.assertTrue("Not the same object", modifiedMetric.equals(toUpdate));
         Assert.assertNotEquals("Name not modified", NAME, modifiedMetric.getName());
+        metricService.delete(toUpdate.getId());
     }
 }

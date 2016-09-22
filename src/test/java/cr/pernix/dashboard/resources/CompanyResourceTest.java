@@ -47,6 +47,9 @@ public class CompanyResourceTest extends JerseyTest {
         List<Company> companyList = response.readEntity(new GenericType<List<Company>>() {
         });
         Assert.assertEquals(testUser.size(), companyList.size());
+        for(Company company: companyList) {
+            companyService.delete(company.getId());
+        }
     }
 
     @Test
@@ -84,5 +87,6 @@ public class CompanyResourceTest extends JerseyTest {
         Company modifiedCompany = CompanyService.getInstance().get(toUpdate.getId());
         Assert.assertTrue("Not the same object", modifiedCompany.equals(toUpdate));
         Assert.assertNotEquals("Name not modified", NAME, modifiedCompany.getName());
+        companyService.delete(toUpdate.getId());
     }
 }

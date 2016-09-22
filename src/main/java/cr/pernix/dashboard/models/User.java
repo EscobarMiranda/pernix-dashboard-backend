@@ -2,92 +2,119 @@ package cr.pernix.dashboard.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "User", schema = "public")
 @XmlRootElement
-public class User {
+public class User implements java.io.Serializable {
 
-    public User() {
-    }
+  private int id;
+  private String email;
+  private String lastname;
+  private String name;
+  private String password;
+  private UserType usertype;
 
-    public User(int id) {
-        setId(id);
-    }
+  public User(){
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private int id;
+  }
 
-    public int getId() {
-        return id;
-    }
+  public User(String email, String lastname, String name, String password){
+    this.email = email;
+    this.lastname = lastname;
+    this.name = name;
+    this.password = password;
+  }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+  public User(String email, String lastname, String name, String password, UserType userType){
+    this.email = email;
+    this.lastname = lastname;
+    this.name = name;
+    this.password = password;
+    this.usertype = userType;
+  }
 
-    @Column(name = "name")
-    private String name;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "id")
 
-    public String getName() {
-        return name;
-    }
+  public int getId() {
+    return id;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-        
-    @Column(name = "lastname")
-    private String lastname;
-    
-    public String getLastname() {
-        return lastname;
-    }
+  public void setId(int id) {
+    this.id = id;
+  }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
+  @Column(name = "name")
 
-    @Column(name = "email")
-    private String email;
-    
-    public String getEmail() {
-        return email;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    @Column(name = "password")
-    private String password;
-    
-    public String getPassword() {
-        return password;
-    }
+  @Column(name = "lastname")
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+  public String getLastname() {
+    return lastname;
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
+  public void setLastname(String lastname) {
+    this.lastname = lastname;
+  }
 
-        User user = (User) o;
-        if (id != user.id)
-            return false;
-        return true;
-    }
+  @Column(name = "email")
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  @Column(name = "password")
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "user_type_id", nullable = false)
+  public UserType getUserType() {
+    return this.usertype;
+  }
+
+  public void setUserType(UserType userType) {
+    this.usertype = userType;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o)
+      return true;
+    if (o == null || getClass() != o.getClass())
+	  return false;
+
+    User user = (User) o;
+    if (id != user.id)
+      return false;
+    return true;
+  }
 
 }

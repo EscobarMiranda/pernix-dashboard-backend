@@ -20,6 +20,7 @@
              'update'       -> update the schema, 
              'validate'     -> validates the schema, no changes on DB -->
         <property name="hibernate.hbm2ddl.auto">create</property>
+        <property name="hibernate.hbm2ddl.import_files">initializeDB.sql</property>
         <mapping class="cr.pernix.dashboard.models.Company"/>
         <mapping class="cr.pernix.dashboard.models.CustomerSatisfaction"/>
         <mapping class="cr.pernix.dashboard.models.Manager"/>

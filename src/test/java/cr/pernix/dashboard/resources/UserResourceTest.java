@@ -53,6 +53,9 @@ public class UserResourceTest extends JerseyTest {
         List<User> usersList = response.readEntity(new GenericType<List<User>>() {
         });
         Assert.assertEquals(testUser.size(), usersList.size());
+        for(User user: usersList) {
+            userService.delete(user.getId());
+        }
     }
 
     @Test
@@ -90,5 +93,6 @@ public class UserResourceTest extends JerseyTest {
         User modifiedUser = UserService.getInstance().get(toUpdate.getId());
         Assert.assertTrue("Not the same object", modifiedUser.equals(toUpdate));
         Assert.assertNotEquals("Name not modified", NAME, modifiedUser.getName());
+        userService.delete(toUpdate.getId());
     }
 }

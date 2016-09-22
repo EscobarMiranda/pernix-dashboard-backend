@@ -51,6 +51,9 @@ public class ManagerResourceTest extends JerseyTest {
         List<Manager> managerList = response.readEntity(new GenericType<List<Manager>>() {
         });
         Assert.assertEquals(testManager.size(), managerList.size());
+        for(Manager manager: managerList) {
+            managerService.delete(manager.getId());
+        }
     }
 
     @Test
@@ -88,5 +91,6 @@ public class ManagerResourceTest extends JerseyTest {
         Manager modifiedManager = ManagerService.getInstance().get(toUpdate.getId());
         Assert.assertTrue("Not the same object", modifiedManager.equals(toUpdate));
         Assert.assertNotEquals("Name not modified", NAME, modifiedManager.getName());
+        managerService.delete(toUpdate.getId());
     }
 }

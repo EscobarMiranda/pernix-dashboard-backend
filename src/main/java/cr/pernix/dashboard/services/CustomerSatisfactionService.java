@@ -10,60 +10,60 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
 
-import cr.pernix.dashboard.models.Metric;
+import cr.pernix.dashboard.models.CustomerSatisfaction;
 import cr.pernix.dashboard.utils.HibernateUtil;
 
-public class MetricService {
-    private static volatile MetricService instance = null;
-    private static final Log LOGGER = LogFactory.getLog(MetricService.class);
+public class CustomerSatisfactionService {
+    private static volatile CustomerSatisfactionService instance = null;
+    private static final Log LOGGER = LogFactory.getLog(CustomerSatisfactionService.class);
 
-    private MetricService() {
+    private CustomerSatisfactionService() {
     }
 
-    public static synchronized MetricService getInstance() {
+    public static synchronized CustomerSatisfactionService getInstance() {
         if (instance == null) {
-            instance = new MetricService();
+            instance = new CustomerSatisfactionService();
         }
         return instance;
     }
 
-    public List<Metric> get() {
+    public List<CustomerSatisfaction> get() {
         return get(0, 0);
     }
 
-    public List<Metric> get(int firstResult, int maxResult) {
-        List<Metric> metrics = new ArrayList<>();
+    public List<CustomerSatisfaction> get(int firstResult, int maxResult) {
+        List<CustomerSatisfaction> list = new ArrayList<>();
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transaction = session.getTransaction();
         transaction.begin();
         if (transaction.getStatus().equals(TransactionStatus.NOT_ACTIVE))
             LOGGER.debug(" >>> Transaction close.");
-        Query query = session.createQuery("from Metric");
+        Query query = session.createQuery("from CustomerSatisfaction");
         query.setFirstResult(firstResult);
         query.setMaxResults(maxResult);
         @SuppressWarnings("unchecked")
-        List<Metric> allMetrics = query.list();
+        List<CustomerSatisfaction> allCostumerSatisfaction = query.list();
         transaction.commit();
-        for (Object userObject : allMetrics) {
-            Metric metric = (Metric) userObject;
-            metrics.add(metric);
+        for (Object userObject : allCostumerSatisfaction) {
+            CustomerSatisfaction customerSatisfaction = (CustomerSatisfaction) userObject;
+            list.add(customerSatisfaction);
         }
-        return metrics;
+        return list;
     }
 
-    public Metric get(int id) {
+    public CustomerSatisfaction get(int id) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
         transaction.begin();
-        Metric metric = (Metric) session.get(Metric.class, id);
+        CustomerSatisfaction customerSatisfaction = (CustomerSatisfaction) session.get(CustomerSatisfaction.class, id);
         transaction.commit();
-        return metric;
+        return customerSatisfaction;
     }
 
-    public void save(Metric metric) {
+    public void save(CustomerSatisfaction customerSatisfaction) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        session.saveOrUpdate(metric);
+        session.saveOrUpdate(customerSatisfaction);
         transaction.commit();
     }
 

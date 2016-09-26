@@ -67,7 +67,7 @@ public class CompanyService {
         transaction.commit();
     }
 
-    public Company delete(int id) {
+    public void delete(int id) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         Company company = get(id);
         if (company != null) {
@@ -83,6 +83,5 @@ public class CompanyService {
             session.delete(company);
             transaction.commit();
         }
-        return company;
     }
 }

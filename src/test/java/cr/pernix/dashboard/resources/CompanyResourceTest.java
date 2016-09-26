@@ -32,6 +32,12 @@ public class CompanyResourceTest extends JerseyTest {
         }
         return testCompanies;
     }
+    
+    private void deleteAll(List<Company> companyList) {
+        for(Company company: companyList) {
+            companyService.delete(company.getId());
+        }
+    }
 
     @Override
     protected Application configure() {
@@ -47,9 +53,7 @@ public class CompanyResourceTest extends JerseyTest {
         List<Company> companyList = response.readEntity(new GenericType<List<Company>>() {
         });
         Assert.assertEquals(testUser.size(), companyList.size());
-        for(Company company: companyList) {
-            companyService.delete(company.getId());
-        }
+        deleteAll(companyList);
     }
 
     @Test
@@ -62,7 +66,7 @@ public class CompanyResourceTest extends JerseyTest {
         Assert.assertEquals(200, response.getStatus());
         Company company = response.readEntity(Company.class);
         Assert.assertTrue("Object do not match", company.equals(toCompare));
-        companyService.delete(toCompare.getId());
+        deleteAll(testCompany);
     }
 
     @Test
@@ -74,6 +78,7 @@ public class CompanyResourceTest extends JerseyTest {
         final Response response = target().path(String.format(path, toDelete.getId())).request().delete();
         Assert.assertEquals(200, response.getStatus());
         Assert.assertNull("Object still persist", companyService.get(toDelete.getId()));
+        deleteAll(testCompany);
     }
 
     @Test
@@ -87,6 +92,6 @@ public class CompanyResourceTest extends JerseyTest {
         Company modifiedCompany = CompanyService.getInstance().get(toUpdate.getId());
         Assert.assertTrue("Not the same object", modifiedCompany.equals(toUpdate));
         Assert.assertNotEquals("Name not modified", NAME, modifiedCompany.getName());
-        companyService.delete(toUpdate.getId());
+        deleteAll(testCompany);
     }
 }

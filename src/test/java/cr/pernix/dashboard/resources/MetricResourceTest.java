@@ -13,6 +13,7 @@ import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Assert;
 import org.junit.Test;
 
+import cr.pernix.dashboard.models.CustomerSatisfaction;
 import cr.pernix.dashboard.models.Metric;
 import cr.pernix.dashboard.services.MetricService;
 
@@ -36,6 +37,12 @@ public class MetricResourceTest extends JerseyTest {
         }
         return testMetrics;
     }
+    
+    private void deleteAll(List<Metric> metricList) {
+        for(Metric metric: metricList) {
+            metricService.delete(metric.getId());
+        }
+    }
 
     @Override
     protected Application configure() {
@@ -51,9 +58,7 @@ public class MetricResourceTest extends JerseyTest {
         List<Metric> metricsList = response.readEntity(new GenericType<List<Metric>>() {
         });
         Assert.assertEquals(testMetric.size(), metricsList.size());
-        for(Metric metric: metricsList) {
-            metricService.delete(metric.getId());
-        }
+        deleteAll(metricsList);
     }
 
     @Test
@@ -66,7 +71,7 @@ public class MetricResourceTest extends JerseyTest {
         Assert.assertEquals(200, response.getStatus());
         Metric metric = response.readEntity(Metric.class);
         Assert.assertTrue("Object do not match", metric.equals(toCompare));
-        metricService.delete(toCompare.getId());
+        deleteAll(testMetric);
     }
 
     @Test
@@ -77,7 +82,7 @@ public class MetricResourceTest extends JerseyTest {
         String path = "metric/%d";
         final Response response = target().path(String.format(path, toDelete.getId())).request().delete();
         Assert.assertEquals(200, response.getStatus());
-        Assert.assertNull("Object still persist", metricService.get(toDelete.getId()));
+        deleteAll(testMetric);
     }
 
     @Test
@@ -91,6 +96,6 @@ public class MetricResourceTest extends JerseyTest {
         Metric modifiedMetric = MetricService.getInstance().get(toUpdate.getId());
         Assert.assertTrue("Not the same object", modifiedMetric.equals(toUpdate));
         Assert.assertNotEquals("Name not modified", NAME, modifiedMetric.getName());
-        metricService.delete(toUpdate.getId());
+        deleteAll(testMetric);
     }
 }

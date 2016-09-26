@@ -65,7 +65,7 @@ public class CustomerSatisfactionResourceTest extends JerseyTest {
     public void testGetAll() {
         List<CustomerSatisfaction> testCostumerSatisfaction = insertTestCostumerSatisfaction(5);
         Assert.assertTrue(testCostumerSatisfaction.size() == 5);
-        final Response response = target().path("costumerSatisfaction").request().get();
+        final Response response = target().path("customerSatisfaction").request().get();
         Assert.assertEquals(200, response.getStatus());
         List<CustomerSatisfaction> costumerSatisfactionList = response.readEntity(new GenericType<List<CustomerSatisfaction>>() {
         });
@@ -78,7 +78,7 @@ public class CustomerSatisfactionResourceTest extends JerseyTest {
         List<CustomerSatisfaction> testCostumerSatisfaction = insertTestCostumerSatisfaction(1);
         Assert.assertTrue(testCostumerSatisfaction.size() > 0);
         CustomerSatisfaction toCompare = testCostumerSatisfaction.get(0);
-        String path = "costumerSatisfaction/%d";
+        String path = "customerSatisfaction/%d";
         final Response response = target().path(String.format(path, toCompare.getId())).request().get();
         Assert.assertEquals(200, response.getStatus());
         CustomerSatisfaction customerSatisfaction = response.readEntity(CustomerSatisfaction.class);
@@ -92,7 +92,7 @@ public class CustomerSatisfactionResourceTest extends JerseyTest {
         List<CustomerSatisfaction> testCostumerSatisfaction = insertTestCostumerSatisfaction(1);
         Assert.assertTrue(testCostumerSatisfaction.size() > 0);
         CustomerSatisfaction toDelete = testCostumerSatisfaction.get(0);
-        String path = "costumerSatisfaction/%d";
+        String path = "customerSatisfaction/%d";
         final Response response = target().path(String.format(path, toDelete.getId())).request().delete();
         Assert.assertEquals(200, response.getStatus());
         deleteAll(testCostumerSatisfaction);
@@ -104,7 +104,7 @@ public class CustomerSatisfactionResourceTest extends JerseyTest {
         Assert.assertTrue(testCostumerSatisfaction.size() > 0);
         CustomerSatisfaction toUpdate = testCostumerSatisfaction.get(0);
         toUpdate.setValue(1);
-        final Response response = target().path("costumerSatisfaction").request().put(Entity.json(toUpdate), Response.class);
+        final Response response = target().path("customerSatisfaction").request().put(Entity.json(toUpdate), Response.class);
         Assert.assertEquals(200, response.getStatus());
         CustomerSatisfaction modifiedCostumerSatisfaction = CustomerSatisfactionService.getInstance().get(toUpdate.getId());
         Assert.assertTrue("Not the same object", modifiedCostumerSatisfaction.equals(toUpdate));

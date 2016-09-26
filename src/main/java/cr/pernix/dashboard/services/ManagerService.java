@@ -67,7 +67,7 @@ public class ManagerService {
         transaction.commit();
     }
 
-    public Manager delete(int id) {
+    public void delete(int id) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         Manager manager = get(id);
         if (manager != null) {
@@ -83,6 +83,5 @@ public class ManagerService {
             session.delete(manager);
             transaction.commit();
         }
-        return manager;
     }
 }

@@ -14,75 +14,83 @@ import cr.pernix.dashboard.models.User;
 import cr.pernix.dashboard.utils.HibernateUtil;
 
 public class UserService {
-    private static volatile UserService instance = null;
-    private static final Log LOGGER = LogFactory.getLog(UserService.class);
+  private static volatile UserService instance = null;
+  private static final Log LOGGER = LogFactory.getLog(UserService.class);
+  
+  private UserService() {
 
-    private UserService() {
+  }
+
+  public static synchronized UserService getInstance() {
+    if (instance == null) {
+      instance = new UserService();
+      }
+    return instance;
+  }
+
+  public List<User> get() {
+    return get(0, 0);
+  }
+
+  public List<User> get(int firstResult, int maxResult) {
+    List<User> users = new ArrayList<User>();
+    Session session =  HibernateUtil.getSessionFactory().getCurrentSession();
+    Transaction transaction = session.getTransaction();
+    transaction.begin();
+    if (transaction.getStatus().equals(TransactionStatus.NOT_ACTIVE))
+      LOGGER.debug(" >>> Transaction close.");
+    Query query = session.createQuery("from User");
+    query.setFirstResult(firstResult);
+    query.setMaxResults(maxResult);
+    @SuppressWarnings("unchecked")
+    List<User> allUsers = query.list();
+    transaction.commit();
+    for (Object object : allUsers) {
+      User user = (User) object;
+      User userObject = new User();
+      userObject.setId(user.getId());
+      userObject.setName(user.getName());
+      userObject.setLastname(user.getLastname());
+      userObject.setEmail(user.getEmail());
+      userObject.setPassword(user.getPassword());
+      userObject.setUserType(user.getUserType());
+      users.add(userObject);
     }
+    return users;
+  }
 
-    public static synchronized UserService getInstance() {
-        if (instance == null) {
-            instance = new UserService();
-        }
-        return instance;
-    }
+  public User get(int id) {
+    Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+    Transaction transaction = session.beginTransaction();
+    transaction.begin();
+    User user = (User) session.get(User.class, id);
+    transaction.commit();
+    return user;
+  }
 
-    public List<User> get() {
-        return get(0, 0);
-    }
+  public void save(User user) {
+    Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+    Transaction transaction = session.beginTransaction();
+    session.saveOrUpdate(user);
+    transaction.commit();
+  }
 
-    public List<User> get(int firstResult, int maxResult) {
-        List<User> users = new ArrayList<>();
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction transaction = session.getTransaction();
-        transaction.begin();
-        if (transaction.getStatus().equals(TransactionStatus.NOT_ACTIVE))
-            LOGGER.debug(" >>> Transaction close.");
-        Query query = session.createQuery("from User");
-        query.setFirstResult(firstResult);
-        query.setMaxResults(maxResult);
-        @SuppressWarnings("unchecked")
-        List<User> allUsers = query.list();
+  public void delete(int id) {
+    Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+    User user = get(id);
+    if (user != null) {
+      if (!session.isOpen()) {
+        LOGGER.debug(" >>> Session close.");
+        LOGGER.debug(" >>> Reopening session.");
+        session = HibernateUtil.getSessionFactory().openSession();
+      }
+      Transaction transaction = session.getTransaction();
+      transaction.begin();
+      if (transaction.getStatus().equals(TransactionStatus.NOT_ACTIVE))
+        LOGGER.debug(" >>> Transaction close.");
+        session.delete(user);
         transaction.commit();
-        for (Object userObject : allUsers) {
-            User user = (User) userObject;
-            users.add(user);
-        }
-        return users;
     }
-
-    public User get(int id) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction transaction = session.beginTransaction();
-        transaction.begin();
-        User user = (User) session.get(User.class, id);
-        transaction.commit();
-        return user;
-    }
-
-    public void save(User user) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction transaction = session.beginTransaction();
-        session.saveOrUpdate(user);
-        transaction.commit();
-    }
-
-    public User delete(int id) {
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        User user = get(id);
-        if (user != null) {
-            if (!session.isOpen()) {
-                LOGGER.debug(" >>> Session close.");
-                LOGGER.debug(" >>> Reopening session.");
-                session = HibernateUtil.getSessionFactory().openSession();
-            }
-            Transaction transaction = session.getTransaction();
-            transaction.begin();
-            if (transaction.getStatus().equals(TransactionStatus.NOT_ACTIVE))
-                LOGGER.debug(" >>> Transaction close.");
-            session.delete(user);
-            transaction.commit();
-        }
-        return user;
-    }
+  }
+  
 }

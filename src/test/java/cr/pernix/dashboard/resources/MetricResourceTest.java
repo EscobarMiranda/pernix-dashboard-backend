@@ -20,7 +20,8 @@ public class MetricResourceTest extends JerseyTest {
 
     private final String NAME = "Resolution Rate";
     private final String DESCRIPTION = "Resolution Rate Description";
-
+    private final boolean ACTIVE = true;
+    
     private MetricService metricService = MetricService.getInstance();
 
     private List<Metric> insertTestMetrics(int count) {
@@ -29,6 +30,7 @@ public class MetricResourceTest extends JerseyTest {
             Metric testMetric = new Metric();
             testMetric.setName(NAME);
             testMetric.setDescription(DESCRIPTION);
+            testMetric.setActive(ACTIVE);
             metricService.save(testMetric);
             testMetrics.add(testMetric);
         }

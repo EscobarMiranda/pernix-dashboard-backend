@@ -2,16 +2,19 @@ package cr.pernix.dashboard.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
 @Table(name = "Manager", schema = "public")
 @XmlRootElement
-public class Manager {
+public class Manager implements java.io.Serializable {
 
     public Manager() {
     }
@@ -64,6 +67,17 @@ public class Manager {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+    
+    private Company company;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "company_id", nullable = false)
+    public Company getCompany() {
+        return this.company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
     @Override

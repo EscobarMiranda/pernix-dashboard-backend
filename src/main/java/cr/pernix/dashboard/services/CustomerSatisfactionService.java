@@ -69,10 +69,19 @@ public class CustomerSatisfactionService {
 
     public void delete(int id) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        Transaction transaction = session.getTransaction();
-        transaction.begin();
-        if (transaction.getStatus().equals(TransactionStatus.NOT_ACTIVE))
-            LOGGER.debug(" >>> Transaction close.");
-        transaction.commit();
+        CustomerSatisfaction customerSatisfaction = get(id);
+        if (customerSatisfaction != null) {
+            if (!session.isOpen()) {
+                LOGGER.debug(" >>> Session close.");
+                LOGGER.debug(" >>> Reopening session.");
+                session = HibernateUtil.getSessionFactory().openSession();
+            }
+            Transaction transaction = session.getTransaction();
+            transaction.begin();
+            if (transaction.getStatus().equals(TransactionStatus.NOT_ACTIVE))
+                LOGGER.debug(" >>> Transaction close.");
+            session.delete(customerSatisfaction);
+            transaction.commit();
+        }
     }
 }

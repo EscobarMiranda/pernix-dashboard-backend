@@ -13,7 +13,10 @@ import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Assert;
 import org.junit.Test;
 
+import cr.pernix.dashboard.models.Company;
+import cr.pernix.dashboard.models.CustomerSatisfaction;
 import cr.pernix.dashboard.models.Manager;
+import cr.pernix.dashboard.services.CompanyService;
 import cr.pernix.dashboard.services.ManagerService;
 
 public class ManagerResourceTest extends JerseyTest {
@@ -23,7 +26,15 @@ public class ManagerResourceTest extends JerseyTest {
     private final String EMAIL = "kescobar@pernix-solutions.com";
 
     private ManagerService managerService = ManagerService.getInstance();
+    private CompanyService companyService = CompanyService.getInstance();
 
+    private Company insertTestCompany() {
+        Company company = new Company();
+        company.setName("Test metric");
+        companyService.save(company);
+        return company;
+    }
+    
     private List<Manager> insertTestManagers(int count) {
         List<Manager> testManagers = new ArrayList<>();
         for (; count > 0; count--) {
@@ -31,10 +42,18 @@ public class ManagerResourceTest extends JerseyTest {
             testManager.setName(NAME);
             testManager.setLastname(LASTNAME);
             testManager.setEmail(EMAIL);
+            testManager.setCompany(insertTestCompany());
             managerService.save(testManager);
             testManagers.add(testManager);
         }
         return testManagers;
+    }
+    
+    private void deleteAll(List<Manager> managerList) {
+        for(Manager manager: managerList) {
+            managerService.delete(manager.getId());
+            companyService.delete(manager.getCompany().getId());
+        }
     }
 
     @Override
@@ -51,9 +70,7 @@ public class ManagerResourceTest extends JerseyTest {
         List<Manager> managerList = response.readEntity(new GenericType<List<Manager>>() {
         });
         Assert.assertEquals(testManager.size(), managerList.size());
-        for(Manager manager: managerList) {
-            managerService.delete(manager.getId());
-        }
+        deleteAll(managerList);
     }
 
     @Test
@@ -66,7 +83,7 @@ public class ManagerResourceTest extends JerseyTest {
         Assert.assertEquals(200, response.getStatus());
         Manager manager = response.readEntity(Manager.class);
         Assert.assertTrue("Object do not match", manager.equals(toCompare));
-        managerService.delete(toCompare.getId());
+        deleteAll(testManager);
     }
 
     @Test
@@ -77,7 +94,7 @@ public class ManagerResourceTest extends JerseyTest {
         String path = "manager/%d";
         final Response response = target().path(String.format(path, toDelete.getId())).request().delete();
         Assert.assertEquals(200, response.getStatus());
-        Assert.assertNull("Object still persist", managerService.get(toDelete.getId()));
+        deleteAll(testManager);
     }
 
     @Test
@@ -91,6 +108,6 @@ public class ManagerResourceTest extends JerseyTest {
         Manager modifiedManager = ManagerService.getInstance().get(toUpdate.getId());
         Assert.assertTrue("Not the same object", modifiedManager.equals(toUpdate));
         Assert.assertNotEquals("Name not modified", NAME, modifiedManager.getName());
-        managerService.delete(toUpdate.getId());
+        deleteAll(testManager);
     }
 }

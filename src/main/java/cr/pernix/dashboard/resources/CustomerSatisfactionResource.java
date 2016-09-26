@@ -16,7 +16,7 @@ import javax.ws.rs.core.Response;
 import cr.pernix.dashboard.models.CustomerSatisfaction;
 import cr.pernix.dashboard.services.CustomerSatisfactionService;
 
-@Path("costumerSatisfaction")
+@Path("customerSatisfaction")
 public class CustomerSatisfactionResource {
 
     @GET

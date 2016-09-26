@@ -25,10 +25,6 @@ public class Company implements java.io.Serializable {
     public Company() {
     }
 
-    public Company(int id) {
-        setId(id);
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")

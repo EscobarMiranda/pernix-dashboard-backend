@@ -17,19 +17,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "CustomerSatisfaction", schema = "public")
 @XmlRootElement
 public class CustomerSatisfaction implements java.io.Serializable {
+    
+    private int id;
+    private int value;
+    private Date timestamp;
+    private Metric metric;
+    private Manager manager;
 
     public CustomerSatisfaction() {
-    }
-
-    public CustomerSatisfaction(int id) {
-        setId(id);
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private int id;
-
     public int getId() {
         return id;
     }
@@ -39,8 +39,6 @@ public class CustomerSatisfaction implements java.io.Serializable {
     }
 
     @Column(name = "value")
-    private int value;
-
     public int getValue() {
         return value;
     }
@@ -50,8 +48,6 @@ public class CustomerSatisfaction implements java.io.Serializable {
     }
 
     @Column(name = "timestamp")
-    private Date timestamp;
-
     public Date getTimestamp() {
         return timestamp;
     }
@@ -60,7 +56,6 @@ public class CustomerSatisfaction implements java.io.Serializable {
         this.timestamp = timestamp;
     }
 
-    private Metric metric;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "metric_id", nullable = false)
     public Metric getMetric() {
@@ -70,7 +65,16 @@ public class CustomerSatisfaction implements java.io.Serializable {
     public void setMetric(Metric metric) {
         this.metric = metric;
     }
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "manager_id", nullable = false)
+    public Manager getManager() {
+      return this.manager;
+    }
 
+    public void setManager(Manager manager) {
+      this.manager = manager;
+    }
 
     @Override
     public boolean equals(Object o) {

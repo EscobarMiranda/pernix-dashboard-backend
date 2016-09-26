@@ -16,60 +16,55 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "UserType", schema = "public")
 @XmlRootElement
-public class UserType implements java.io.Serializable{
-	
-  private int id;
-  private String name;
-  private Set<User> users = new HashSet<User>(0);
-	
-  public UserType() {
+public class UserType implements java.io.Serializable {
 
-  }
-	
-  public UserType(String name){
-    this.name = name;
-  }
-	
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name = "id")
-  public int getId() {
-    return id;
-  }
+    private int id;
+    private String name;
+    private Set<User> users = new HashSet<User>(0);
 
-  public void setId(int id) {
-    this.id = id;
-  }
+    public UserType() {
+    }
 
-  @Column(name = "name")
-  public String getName() {
-    return name;
-  }
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    public int getId() {
+        return id;
+    }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-  @OneToMany(fetch = FetchType.EAGER, mappedBy = "userType")
-  public Set<User> users() {
-    return this.users;
-  }
+    @Column(name = "name")
+    public String getName() {
+        return name;
+    }
 
-  public void setUsers(Set<User> users) {
-    this.users = users;
-  }
-    
-  @Override
-  public boolean equals(Object o) {
-    if (this == o)
-      return true;
-    if (o == null || getClass() != o.getClass())
-      return false;
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    UserType type = (UserType) o;
-    if (id != type.id)
-      return false;
-    return true;
-  }
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "userType")
+    public Set<User> users() {
+        return this.users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        UserType type = (UserType) o;
+        if (id != type.id)
+            return false;
+        return true;
+    }
 
 }

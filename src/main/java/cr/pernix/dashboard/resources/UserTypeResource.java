@@ -25,32 +25,32 @@ public class UserTypeResource {
         List<UserType> result = UserTypeService.getInstance().get();
         GenericEntity<List<UserType>> list = new GenericEntity<List<UserType>>(result) {
         };
-        return Response.ok(list).build();
+        return Response.ok(list).header("Access-Control-Allow-Origin", "*").build();
     }
 
     @GET
     @Path("/{id}")
     public Response get(@PathParam("id") int id) throws Exception {
         UserType userType = UserTypeService.getInstance().get(id);
-        return Response.ok(userType).build();
+        return Response.ok(userType).header("Access-Control-Allow-Origin", "*").build();
     }
 
     @POST
     public Response create(UserType userType) throws Exception {
         UserTypeService.getInstance().save(userType);
-        return Response.ok().build();
+        return Response.ok().header("Access-Control-Allow-Origin", "*").build();
     }
 
     @PUT
     public Response update(UserType userType) throws Exception {
         UserTypeService.getInstance().save(userType);
-        return Response.ok().build();
+        return Response.ok().header("Access-Control-Allow-Origin", "*").build();
     }
 
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") int id) throws Exception {
         UserTypeService.getInstance().delete(id);
-        return Response.ok().build();
+        return Response.ok().header("Access-Control-Allow-Origin", "*").build();
     }
 }

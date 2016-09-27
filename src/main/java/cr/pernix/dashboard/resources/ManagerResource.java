@@ -25,32 +25,32 @@ public class ManagerResource {
         List<Manager> result = ManagerService.getInstance().get();
         GenericEntity<List<Manager>> list = new GenericEntity<List<Manager>>(result) {
         };
-        return Response.ok(list).build();
+        return Response.ok(list).header("Access-Control-Allow-Origin", "*").build();
     }
 
     @GET
     @Path("/{id}")
     public Response get(@PathParam("id") int id) throws Exception {
         Manager manager = ManagerService.getInstance().get(id);
-        return Response.ok(manager).build();
+        return Response.ok(manager).header("Access-Control-Allow-Origin", "*").build();
     }
 
     @POST
     public Response create(Manager manager) throws Exception {
         ManagerService.getInstance().save(manager);
-        return Response.ok().build();
+        return Response.ok().header("Access-Control-Allow-Origin", "*").build();
     }
 
     @PUT
     public Response update(Manager manager) throws Exception {
         ManagerService.getInstance().save(manager);
-        return Response.ok().build();
+        return Response.ok().header("Access-Control-Allow-Origin", "*").build();
     }
 
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") int id) throws Exception {
         ManagerService.getInstance().delete(id);
-        return Response.ok().build();
+        return Response.ok().header("Access-Control-Allow-Origin", "*").build();
     }
 }

@@ -24,10 +24,11 @@ public class Manager implements java.io.Serializable {
     private String name;
     private String lastname;
     private String email;
+    private boolean active;
     private Company company;
     private Set<User> users = new HashSet<User>(0);
     private Set<CustomerSatisfaction> costumerSatisfactions = new HashSet<CustomerSatisfaction>(0);
-
+    
     public Manager() {
     }
 
@@ -67,6 +68,15 @@ public class Manager implements java.io.Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Column (name = "active")
+    public boolean getActive() {
+        return active;
+    }
+    
+    public void setActive(boolean active){
+        this.active = active;
     }
 
     @ManyToOne(fetch = FetchType.EAGER)

@@ -25,32 +25,32 @@ public class UserResource {
         List<User> result = UserService.getInstance().get();
         GenericEntity<List<User>> list = new GenericEntity<List<User>>(result) {
         };
-        return Response.ok(list).build();
+        return Response.ok(list).header("Access-Control-Allow-Origin", "*").build();
     }
 
     @GET
     @Path("/{id}")
     public Response getUser(@PathParam("id") int id) throws Exception {
         User user = UserService.getInstance().get(id);
-        return Response.ok(user).build();
+        return Response.ok(user).header("Access-Control-Allow-Origin", "*").build();
     }
 
     @POST
     public Response createUser(User user) throws Exception {
         UserService.getInstance().save(user);
-        return Response.ok().build();
+        return Response.ok().header("Access-Control-Allow-Origin", "*").build();
     }
 
     @PUT
     public Response update(User user) throws Exception {
         UserService.getInstance().save(user);
-        return Response.ok().build();
+        return Response.ok().header("Access-Control-Allow-Origin", "*").build();
     }
 
     @DELETE
     @Path("/{id}")
     public Response deleteUser(@PathParam("id") int id) throws Exception {
         UserService.getInstance().delete(id);
-        return Response.ok().build();
+        return Response.ok().header("Access-Control-Allow-Origin", "*").build();
     }
 }

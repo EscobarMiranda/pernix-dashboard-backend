@@ -25,20 +25,20 @@ public class CustomerSatisfactionResource {
         List<CustomerSatisfaction> result = CustomerSatisfactionService.getInstance().get();
         GenericEntity<List<CustomerSatisfaction>> list = new GenericEntity<List<CustomerSatisfaction>>(result) {
         };
-        return Response.ok(list).build();
+        return Response.ok(list).header("Access-Control-Allow-Origin", "*").build();
     }
 
     @GET
     @Path("/{id}")
     public Response get(@PathParam("id") int id) throws Exception {
         CustomerSatisfaction customerSatisfaction = CustomerSatisfactionService.getInstance().get(id);
-        return Response.ok(customerSatisfaction).build();
+        return Response.ok(customerSatisfaction).header("Access-Control-Allow-Origin", "*").build();
     }
 
     @POST
     public Response create(CustomerSatisfaction customerSatisfaction) throws Exception {
         CustomerSatisfactionService.getInstance().save(customerSatisfaction);
-        return Response.ok().build();
+        return Response.ok().header("Access-Control-Allow-Origin", "*").build();
     }
 
     @PUT
@@ -51,6 +51,6 @@ public class CustomerSatisfactionResource {
     @Path("/{id}")
     public Response delete(@PathParam("id") int id) throws Exception {
         CustomerSatisfactionService.getInstance().delete(id);
-        return Response.ok().build();
+        return Response.ok().header("Access-Control-Allow-Origin", "*").build();
     }
 }

@@ -25,32 +25,32 @@ public class MetricResource {
         List<Metric> result = MetricService.getInstance().get();
         GenericEntity<List<Metric>> list = new GenericEntity<List<Metric>>(result) {
         };
-        return Response.ok(list).build();
+        return Response.ok(list).header("Access-Control-Allow-Origin", "*").build();
     }
 
     @GET
     @Path("/{id}")
     public Response get(@PathParam("id") int id) throws Exception {
         Metric metric = MetricService.getInstance().get(id);
-        return Response.ok(metric).build();
+        return Response.ok(metric).header("Access-Control-Allow-Origin", "*").build();
     }
 
     @POST
     public Response create(Metric metric) throws Exception {
         MetricService.getInstance().save(metric);
-        return Response.ok().build();
+        return Response.ok().header("Access-Control-Allow-Origin", "*").build();
     }
 
     @PUT
     public Response update(Metric metric) throws Exception {
         MetricService.getInstance().save(metric);
-        return Response.ok().build();
+        return Response.ok().header("Access-Control-Allow-Origin", "*").build();
     }
 
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") int id) throws Exception {
         MetricService.getInstance().delete(id);
-        return Response.ok().build();
+        return Response.ok().header("Access-Control-Allow-Origin", "*").build();
     }
 }

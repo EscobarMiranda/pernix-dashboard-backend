@@ -20,6 +20,7 @@ public class Company implements java.io.Serializable {
     
     private int id;
     private String name;
+    private boolean active;
     private Set<Manager> manager = new HashSet<Manager>(0);
 
     public Company() {
@@ -45,6 +46,15 @@ public class Company implements java.io.Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+    
+    @Column (name = "active")
+    public boolean getActive() {
+        return active;
+    }
+    
+    public void setActive(boolean active){
+        this.active = active;
     }
     
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "manager")

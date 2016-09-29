@@ -30,7 +30,6 @@ public class Metric implements java.io.Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-
     public int getId() {
         return id;
     }
@@ -40,7 +39,6 @@ public class Metric implements java.io.Serializable {
     }
 
     @Column(name = "name")
-
     public String getName() {
         return name;
     }
@@ -50,7 +48,6 @@ public class Metric implements java.io.Serializable {
     }
 
     @Column(name = "description")
-
     public String getDescription() {
         return description;
     }
@@ -60,7 +57,6 @@ public class Metric implements java.io.Serializable {
     }
 
     @Column(name = "active")
-
     public boolean getActive() {
         return active;
     }

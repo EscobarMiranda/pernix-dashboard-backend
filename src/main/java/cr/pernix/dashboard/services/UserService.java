@@ -11,6 +11,7 @@ import org.hibernate.Transaction;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
 
 import cr.pernix.dashboard.models.User;
+import cr.pernix.dashboard.objects.LoginObject;
 import cr.pernix.dashboard.utils.HibernateUtil;
 
 public class UserService {

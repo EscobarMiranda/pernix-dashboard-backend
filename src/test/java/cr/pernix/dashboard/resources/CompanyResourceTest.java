@@ -19,6 +19,7 @@ import cr.pernix.dashboard.services.CompanyService;
 public class CompanyResourceTest extends JerseyTest {
 
     private final String NAME = "Pernix";
+    private final boolean ACTIVE = true;
 
     private CompanyService companyService = CompanyService.getInstance();
 
@@ -27,6 +28,7 @@ public class CompanyResourceTest extends JerseyTest {
         for (; count > 0; count--) {
             Company testCompany = new Company();
             testCompany.setName(NAME);
+            testCompany.setActive(ACTIVE);
             companyService.save(testCompany);
             testCompanies.add(testCompany);
         }

@@ -15,7 +15,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import cr.pernix.dashboard.models.Company;
-import cr.pernix.dashboard.models.CustomerSatisfaction;
 import cr.pernix.dashboard.models.Manager;
 import cr.pernix.dashboard.models.User;
 import cr.pernix.dashboard.models.UserType;
@@ -32,7 +31,7 @@ public class UserResourceTest extends JerseyTest {
     private final String LASTNAME = "Escobar Miranda";
     private final String EMAIL = "kescobar@pernix.cr";
     private final String PASSWORD = "password";
-
+    private final boolean ACTIVE = true;
     private final String USERTYPENAME = "admintest";
 
     private UserService userService = UserService.getInstance();
@@ -56,6 +55,7 @@ public class UserResourceTest extends JerseyTest {
             testUser.setLastname(LASTNAME);
             testUser.setEmail(EMAIL);
             testUser.setPassword(PASSWORD);
+            testUser.setActive(ACTIVE);
             testUser.setUserType(insertTestUserType());
             testUser.setManager(insertTestManager());
             userService.save(testUser);

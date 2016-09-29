@@ -47,7 +47,7 @@ public class UserTypeResourceTest extends JerseyTest {
         List<UserType> userTypeList = response.readEntity(new GenericType<List<UserType>>() {
         });
         Assert.assertEquals(testUserType.size(), userTypeList.size());
-        for(UserType userType: userTypeList) {
+        for (UserType userType : userTypeList) {
             userTypeService.delete(userType.getId());
         }
     }

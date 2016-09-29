@@ -34,7 +34,7 @@ public class ManagerResourceTest extends JerseyTest {
         companyService.save(company);
         return company;
     }
-    
+
     private List<Manager> insertTestManagers(int count) {
         List<Manager> testManagers = new ArrayList<>();
         for (; count > 0; count--) {
@@ -48,9 +48,9 @@ public class ManagerResourceTest extends JerseyTest {
         }
         return testManagers;
     }
-    
+
     private void deleteAll(List<Manager> managerList) {
-        for(Manager manager: managerList) {
+        for (Manager manager : managerList) {
             managerService.delete(manager.getId());
             companyService.delete(manager.getCompany().getId());
         }

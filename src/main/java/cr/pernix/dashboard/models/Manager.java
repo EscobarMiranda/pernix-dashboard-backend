@@ -1,5 +1,8 @@
 package cr.pernix.dashboard.models;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -16,18 +20,20 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Manager implements java.io.Serializable {
 
-    public Manager() {
-    }
+    private int id;
+    private String name;
+    private String lastname;
+    private String email;
+    private Company company;
+    private Set<User> users = new HashSet<User>(0);
+    private Set<CustomerSatisfaction> costumerSatisfactions = new HashSet<CustomerSatisfaction>(0);
 
-    public Manager(int id) {
-        setId(id);
+    public Manager() {
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private int id;
-
     public int getId() {
         return id;
     }
@@ -37,8 +43,6 @@ public class Manager implements java.io.Serializable {
     }
 
     @Column(name = "name")
-    private String name;
-
     public String getName() {
         return name;
     }
@@ -46,10 +50,8 @@ public class Manager implements java.io.Serializable {
     public void setName(String name) {
         this.name = name;
     }
-    
+
     @Column(name = "lastname")
-    private String lastname;
-    
     public String getLastname() {
         return lastname;
     }
@@ -57,10 +59,8 @@ public class Manager implements java.io.Serializable {
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
-    
+
     @Column(name = "email")
-    private String email;
-    
     public String getEmail() {
         return email;
     }
@@ -68,8 +68,7 @@ public class Manager implements java.io.Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
-    
-    private Company company;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id", nullable = false)
     public Company getCompany() {
@@ -78,6 +77,24 @@ public class Manager implements java.io.Serializable {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "manager")
+    public Set<User> users() {
+        return this.users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "manager")
+    public Set<CustomerSatisfaction> CostumerSatisfactions() {
+        return this.costumerSatisfactions;
+    }
+
+    public void setCostumerSatisfactions(Set<CustomerSatisfaction> costumerSatisfactions) {
+        this.costumerSatisfactions = costumerSatisfactions;
     }
 
     @Override

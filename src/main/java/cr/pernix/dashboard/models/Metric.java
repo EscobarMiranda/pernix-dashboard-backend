@@ -27,10 +27,6 @@ public class Metric implements java.io.Serializable {
     public Metric() {
     }
 
-    public Metric(int id) {
-        setId(id);
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")

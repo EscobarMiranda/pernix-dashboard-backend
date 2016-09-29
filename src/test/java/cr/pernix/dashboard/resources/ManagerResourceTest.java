@@ -14,7 +14,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import cr.pernix.dashboard.models.Company;
-import cr.pernix.dashboard.models.CustomerSatisfaction;
 import cr.pernix.dashboard.models.Manager;
 import cr.pernix.dashboard.services.CompanyService;
 import cr.pernix.dashboard.services.ManagerService;
@@ -24,6 +23,7 @@ public class ManagerResourceTest extends JerseyTest {
     private final String NAME = "Pernix";
     private final String LASTNAME = "Solutions";
     private final String EMAIL = "kescobar@pernix-solutions.com";
+    private final boolean ACTIVE = true;
 
     private ManagerService managerService = ManagerService.getInstance();
     private CompanyService companyService = CompanyService.getInstance();
@@ -42,6 +42,7 @@ public class ManagerResourceTest extends JerseyTest {
             testManager.setName(NAME);
             testManager.setLastname(LASTNAME);
             testManager.setEmail(EMAIL);
+            testManager.setActive(ACTIVE);
             testManager.setCompany(insertTestCompany());
             managerService.save(testManager);
             testManagers.add(testManager);

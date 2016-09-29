@@ -21,6 +21,7 @@ public class User implements java.io.Serializable {
     private String lastname;
     private String name;
     private String password;
+    private boolean active;
     private UserType usertype;
     private Manager manager;
 
@@ -78,6 +79,15 @@ public class User implements java.io.Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+    
+    @Column (name = "active")
+    public boolean getActive() {
+        return active;
+    }
+    
+    public void setActive(boolean active){
+        this.active = active;
+    }
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_type_id", nullable = false)
@@ -111,5 +121,4 @@ public class User implements java.io.Serializable {
             return false;
         return true;
     }
-
 }

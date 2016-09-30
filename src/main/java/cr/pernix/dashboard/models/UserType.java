@@ -18,6 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class UserType implements java.io.Serializable {
 
+    private static final long serialVersionUID = -3958006081260735953L;
     private int id;
     private String name;
     private Set<User> users = new HashSet<User>(0);

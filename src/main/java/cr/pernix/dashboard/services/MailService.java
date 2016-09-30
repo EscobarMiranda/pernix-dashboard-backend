@@ -1,8 +1,5 @@
 package cr.pernix.dashboard.services;
 
-import java.io.IOException;
-import java.util.Properties;
-
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.logging.Log;
@@ -16,7 +13,7 @@ import cr.pernix.dashboard.utils.ResourceManager;
 public class MailService {
     private static volatile MailService instance = null;
     private static final Log LOGGER = LogFactory.getLog(MailService.class);
-    static Properties mailProperties;
+    private static final ResourceManager mailProperties = new ResourceManager("mail.properties");
 
     private MailService() {
 
@@ -29,24 +26,11 @@ public class MailService {
         return instance;
     }
 
-    static {
-        getMailProperties();
-    }
-
-    private static void getMailProperties() {
-        mailProperties = new Properties();
-        try {
-            mailProperties.load(ResourceManager.getResourceAsInputStream("mail.properties"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public Response sendEmail(String recipient, String subject, String body) {
         Response response = new Response();
         try {
-            Client client = new Client(mailProperties.getProperty("mail.api.key"));
-            response = client.sendMessage(mailProperties.getProperty("mail.api.email"), recipient, subject, body, body);
+            Client client = new Client(mailProperties.getValue("mail.api.key"));
+            response = client.sendMessage(mailProperties.getValue("mail.api.email"), recipient, subject, body, body);
             return response;
         } catch (Exception mailerException) {
             LOGGER.error(mailerException);

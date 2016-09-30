@@ -1,18 +1,14 @@
 package cr.pernix.dashboard.resources;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.ws.rs.core.Application;
-import org.glassfish.jersey.server.ResourceConfig;
-import org.jboss.logging.Logger;
-import org.junit.Test;
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Response;
 
+import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
+import org.jboss.logging.Logger;
 import org.junit.Assert;
+import org.junit.Test;
 
 import cr.pernix.dashboard.models.Company;
 import cr.pernix.dashboard.models.Manager;

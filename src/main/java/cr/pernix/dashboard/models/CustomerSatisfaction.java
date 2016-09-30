@@ -18,6 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class CustomerSatisfaction implements java.io.Serializable {
     
+    private static final long serialVersionUID = -2233569769684926099L;
     private int id;
     private int value;
     private Date timestamp;

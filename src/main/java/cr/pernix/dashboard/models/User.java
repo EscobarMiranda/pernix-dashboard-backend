@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class User implements java.io.Serializable {
 
+    private static final long serialVersionUID = 7796949849496424702L;
     private int id;
     private String email;
     private String lastname;

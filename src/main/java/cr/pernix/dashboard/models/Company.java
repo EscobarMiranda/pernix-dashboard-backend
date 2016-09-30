@@ -18,6 +18,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Company implements java.io.Serializable {
     
+    private static final long serialVersionUID = 7907619397255122153L;
     private int id;
     private String name;
     private boolean active;

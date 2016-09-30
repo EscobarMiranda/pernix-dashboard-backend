@@ -20,6 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Manager implements java.io.Serializable {
 
+    private static final long serialVersionUID = 3423903352048151257L;
     private int id;
     private String name;
     private String lastname;

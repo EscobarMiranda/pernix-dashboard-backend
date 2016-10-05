@@ -1,5 +1,8 @@
 package cr.pernix.dashboard.models;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -24,6 +28,7 @@ public class User implements java.io.Serializable {
     private boolean active;
     private UserType usertype;
     private Manager manager;
+    private Set<Answer> costumerSatisfactions = new HashSet<Answer>(0);
 
     public User() {
     }
@@ -97,6 +102,15 @@ public class User implements java.io.Serializable {
 
     public void setManager(Manager manager) {
         this.manager = manager;
+    }
+    
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    public Set<Answer> CostumerSatisfactions() {
+        return this.costumerSatisfactions;
+    }
+
+    public void setCostumerSatisfactions(Set<Answer> costumerSatisfactions) {
+        this.costumerSatisfactions = costumerSatisfactions;
     }
 
     @Override

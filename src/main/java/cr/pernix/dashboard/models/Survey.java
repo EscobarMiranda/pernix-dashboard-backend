@@ -9,26 +9,22 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
-@Table(name = "Metric", schema = "public")
+@Table(name = "Survey", schema = "public")
 @XmlRootElement
-public class Metric implements java.io.Serializable {
+public class Survey implements java.io.Serializable {
 
-    private static final long serialVersionUID = -362011388091201000L;
+    private static final long serialVersionUID = -3475745256322946264L;
     private int id;
     private String name;
-    private String description;
     private boolean active;
-    private Set<Answer> customerSatisfaction = new HashSet<Answer>(0);
-    private Survey survey;
-    
-    public Metric() {
+    private Set<Metric> metrics = new HashSet<Metric>(0);
+
+    public Survey() {
     }
 
     @Id
@@ -50,16 +46,7 @@ public class Metric implements java.io.Serializable {
     public void setName(String name) {
         this.name = name;
     }
-
-    @Column(name = "description")
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
+    
     @Column(name = "active")
     public boolean getActive() {
         return active;
@@ -68,24 +55,14 @@ public class Metric implements java.io.Serializable {
     public void setActive(boolean active) {
         this.active = active;
     }
-    
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "customerSatisfaction")
-    public Set<Answer> customerSatisfaction() {
-        return this.customerSatisfaction;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "metric")
+    public Set<Metric> metrics() {
+        return this.metrics;
     }
 
-    public void setUsers(Set<Answer> customerSatisfaction) {
-        this.customerSatisfaction = customerSatisfaction;
-    }
-    
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "survey_id", nullable = false)
-    public Survey getSurvey() {
-        return this.survey;
-    }
-
-    public void setSurvey(Survey survey) {
-        this.survey = survey;
+    public void setMetrics(Set<Metric> metrics) {
+        this.metrics = metrics;
     }
 
     @Override
@@ -95,8 +72,8 @@ public class Metric implements java.io.Serializable {
         if (o == null || getClass() != o.getClass())
             return false;
 
-        Metric metric = (Metric) o;
-        if (id != metric.id)
+        Survey survey = (Survey) o;
+        if (id != survey.id)
             return false;
         return true;
     }

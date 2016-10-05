@@ -13,17 +13,19 @@ import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Assert;
 import org.junit.Test;
 
-import cr.pernix.dashboard.models.CustomerSatisfaction;
 import cr.pernix.dashboard.models.Metric;
+import cr.pernix.dashboard.models.Survey;
 import cr.pernix.dashboard.services.MetricService;
+import cr.pernix.dashboard.services.SurveyService;
 
 public class MetricResourceTest extends JerseyTest {
 
     private final String NAME = "Resolution Rate";
     private final String DESCRIPTION = "Resolution Rate Description";
     private final boolean ACTIVE = true;
-    
+
     private MetricService metricService = MetricService.getInstance();
+    private SurveyService surveyService = SurveyService.getInstance();
 
     private List<Metric> insertTestMetrics(int count) {
         List<Metric> testMetrics = new ArrayList<>();
@@ -32,14 +34,23 @@ public class MetricResourceTest extends JerseyTest {
             testMetric.setName(NAME);
             testMetric.setDescription(DESCRIPTION);
             testMetric.setActive(ACTIVE);
+            testMetric.setSurvey(insertTestSurvey());
             metricService.save(testMetric);
             testMetrics.add(testMetric);
         }
         return testMetrics;
     }
-    
+
+    private Survey insertTestSurvey() {
+        Survey testSurvey = new Survey();
+        testSurvey.setName(NAME);
+        testSurvey.setActive(ACTIVE);
+        surveyService.save(testSurvey);
+        return testSurvey;
+    }
+
     private void deleteAll(List<Metric> metricList) {
-        for(Metric metric: metricList) {
+        for (Metric metric : metricList) {
             metricService.delete(metric.getId());
         }
     }
@@ -62,6 +73,20 @@ public class MetricResourceTest extends JerseyTest {
     }
 
     @Test
+    public void testGetBySurvey() {
+        List<Metric> testMetric = insertTestMetrics(5);
+        Assert.assertTrue(testMetric.size() == 5);
+        Survey survey = testMetric.get(0).getSurvey();
+        String path = "metric/bySurvey/%d";
+        final Response response = target().path(String.format(path, survey.getId())).request().get();
+        Assert.assertEquals(200, response.getStatus());
+        List<Metric> metricsList = response.readEntity(new GenericType<List<Metric>>() {
+        });
+        Assert.assertTrue(testMetric.size() > 0);
+        deleteAll(metricsList);
+    }
+
+    @Test
     public void testGet() {
         List<Metric> testMetric = insertTestMetrics(1);
         Assert.assertTrue(testMetric.size() > 0);
@@ -75,13 +100,19 @@ public class MetricResourceTest extends JerseyTest {
     }
 
     @Test
-    public void testDelete() {
+    public void testChangeState() {
         List<Metric> testMetric = insertTestMetrics(1);
         Assert.assertTrue(testMetric.size() > 0);
-        Metric toDelete = testMetric.get(0);
-        String path = "metric/%d";
-        final Response response = target().path(String.format(path, toDelete.getId())).request().delete();
+        Metric toChangeState = testMetric.get(0);
+        Response response = target().path("metric/changeState").request().put(Entity.json(toChangeState),
+                Response.class);
         Assert.assertEquals(200, response.getStatus());
+        Metric metric = metricService.get(toChangeState.getId());
+        Assert.assertFalse(metric.getActive());
+        response = target().path("metric/changeState").request().put(Entity.json(metric), Response.class);
+        Assert.assertEquals(200, response.getStatus());
+        metric = metricService.get(metric.getId());
+        Assert.assertTrue(metric.getActive());
         deleteAll(testMetric);
     }
 

@@ -72,14 +72,18 @@ public class CompanyResourceTest extends JerseyTest {
     }
 
     @Test
-    public void testDelete() {
+    public void testChangeState() {
         List<Company> testCompany = insertTestCompanies(1);
         Assert.assertTrue(testCompany.size() > 0);
-        Company toDelete = testCompany.get(0);
-        String path = "company/%d";
-        final Response response = target().path(String.format(path, toDelete.getId())).request().delete();
+        Company toChangeState = testCompany.get(0);
+        Response response = target().path("company/changeState").request().put(Entity.json(toChangeState), Response.class);
         Assert.assertEquals(200, response.getStatus());
-        Assert.assertNull("Object still persist", companyService.get(toDelete.getId()));
+        Company company = companyService.get(toChangeState.getId());
+        Assert.assertFalse(company.getActive());
+        response = target().path("company/changeState").request().put(Entity.json(company), Response.class);
+        Assert.assertEquals(200, response.getStatus());
+        company = companyService.get(toChangeState.getId());
+        Assert.assertTrue(company.getActive());
         deleteAll(testCompany);
     }
 

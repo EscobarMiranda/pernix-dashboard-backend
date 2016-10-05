@@ -10,67 +10,72 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
 
-import cr.pernix.dashboard.models.CustomerSatisfaction;
+import cr.pernix.dashboard.models.Survey;
 import cr.pernix.dashboard.utils.HibernateUtil;
 
-public class CustomerSatisfactionService {
-    private static volatile CustomerSatisfactionService instance = null;
-    private static final Log LOGGER = LogFactory.getLog(CustomerSatisfactionService.class);
+public class SurveyService {
+    private static volatile SurveyService instance = null;
+    private static final Log LOGGER = LogFactory.getLog(SurveyService.class);
 
-    private CustomerSatisfactionService() {
+    private SurveyService() {
     }
 
-    public static synchronized CustomerSatisfactionService getInstance() {
+    public static synchronized SurveyService getInstance() {
         if (instance == null) {
-            instance = new CustomerSatisfactionService();
+            instance = new SurveyService();
         }
         return instance;
     }
 
-    public List<CustomerSatisfaction> get() {
+    public List<Survey> get() {
         return get(0, 0);
     }
 
-    public List<CustomerSatisfaction> get(int firstResult, int maxResult) {
-        List<CustomerSatisfaction> list = new ArrayList<>();
+    public List<Survey> get(int firstResult, int maxResult) {
+        List<Survey> surveys = new ArrayList<>();
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transaction = session.getTransaction();
         transaction.begin();
         if (transaction.getStatus().equals(TransactionStatus.NOT_ACTIVE))
             LOGGER.debug(" >>> Transaction close.");
-        Query query = session.createQuery("from CustomerSatisfaction");
+        Query query = session.createQuery("from Survey");
         query.setFirstResult(firstResult);
         query.setMaxResults(maxResult);
         @SuppressWarnings("unchecked")
-        List<CustomerSatisfaction> allCostumerSatisfaction = query.list();
+        List<Survey> allSurveys = query.list();
         transaction.commit();
-        for (Object userObject : allCostumerSatisfaction) {
-            CustomerSatisfaction customerSatisfaction = (CustomerSatisfaction) userObject;
-            list.add(customerSatisfaction);
+        for (Object object : allSurveys) {
+            Survey survey = (Survey) object;
+            surveys.add(survey);
         }
-        return list;
+        return surveys;
     }
 
-    public CustomerSatisfaction get(int id) {
+    public Survey get(int id) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
         transaction.begin();
-        CustomerSatisfaction customerSatisfaction = (CustomerSatisfaction) session.get(CustomerSatisfaction.class, id);
+        Survey survey = (Survey) session.get(Survey.class, id);
         transaction.commit();
-        return customerSatisfaction;
+        return survey;
     }
 
-    public void save(CustomerSatisfaction customerSatisfaction) {
+    public void save(Survey survey) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        session.saveOrUpdate(customerSatisfaction);
+        session.saveOrUpdate(survey);
         transaction.commit();
+    }
+    
+    public void changeState(Survey survey) {
+        survey.setActive(!survey.getActive());
+        save(survey);
     }
 
     public void delete(int id) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-        CustomerSatisfaction customerSatisfaction = get(id);
-        if (customerSatisfaction != null) {
+        Survey survey = get(id);
+        if (survey != null) {
             if (!session.isOpen()) {
                 LOGGER.debug(" >>> Session close.");
                 LOGGER.debug(" >>> Reopening session.");
@@ -80,7 +85,7 @@ public class CustomerSatisfactionService {
             transaction.begin();
             if (transaction.getStatus().equals(TransactionStatus.NOT_ACTIVE))
                 LOGGER.debug(" >>> Transaction close.");
-            session.delete(customerSatisfaction);
+            session.delete(survey);
             transaction.commit();
         }
     }

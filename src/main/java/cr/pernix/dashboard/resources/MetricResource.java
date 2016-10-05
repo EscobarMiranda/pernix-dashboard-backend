@@ -27,6 +27,16 @@ public class MetricResource {
         };
         return Response.ok(list).header("Access-Control-Allow-Origin", "*").build();
     }
+    
+    @GET
+    @Path("/bySurvey/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getBySurvey(@PathParam("id") int id) throws Exception {
+        List<Metric> result = MetricService.getInstance().getBySurvey(id);
+        GenericEntity<List<Metric>> list = new GenericEntity<List<Metric>>(result) {
+        };
+        return Response.ok(list).header("Access-Control-Allow-Origin", "*").build();
+    }
 
     @GET
     @Path("/{id}")
@@ -47,10 +57,10 @@ public class MetricResource {
         return Response.ok().header("Access-Control-Allow-Origin", "*").build();
     }
 
-    @DELETE
-    @Path("/{id}")
-    public Response delete(@PathParam("id") int id) throws Exception {
-        MetricService.getInstance().delete(id);
+    @PUT
+    @Path("changeState")
+    public Response changeState(Metric metric) throws Exception {
+        MetricService.getInstance().changeState(metric);
         return Response.ok().header("Access-Control-Allow-Origin", "*").build();
     }
 }

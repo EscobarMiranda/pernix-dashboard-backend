@@ -28,7 +28,6 @@ public class Manager implements java.io.Serializable {
     private boolean active;
     private Company company;
     private Set<User> users = new HashSet<User>(0);
-    private Set<CustomerSatisfaction> costumerSatisfactions = new HashSet<CustomerSatisfaction>(0);
     
     public Manager() {
     }
@@ -97,15 +96,6 @@ public class Manager implements java.io.Serializable {
 
     public void setUsers(Set<User> users) {
         this.users = users;
-    }
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "manager")
-    public Set<CustomerSatisfaction> CostumerSatisfactions() {
-        return this.costumerSatisfactions;
-    }
-
-    public void setCostumerSatisfactions(Set<CustomerSatisfaction> costumerSatisfactions) {
-        this.costumerSatisfactions = costumerSatisfactions;
     }
 
     @Override

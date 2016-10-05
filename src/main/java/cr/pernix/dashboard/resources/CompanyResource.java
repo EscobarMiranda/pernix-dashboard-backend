@@ -47,10 +47,10 @@ public class CompanyResource {
         return Response.ok().header("Access-Control-Allow-Origin", "*").build();
     }
 
-    @DELETE
-    @Path("/{id}")
-    public Response delete(@PathParam("id") int id) throws Exception {
-        CompanyService.getInstance().delete(id);
+    @PUT
+    @Path("/changeState")
+    public Response delete(Company company) throws Exception {
+        CompanyService.getInstance().changeState(company);
         return Response.ok().header("Access-Control-Allow-Origin", "*").build();
     }
 }

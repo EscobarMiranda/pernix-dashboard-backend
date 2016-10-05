@@ -22,10 +22,11 @@
         <property name="hibernate.hbm2ddl.auto">create</property>
         <property name="hibernate.hbm2ddl.import_files">initializeDB.sql</property>
         <mapping class="cr.pernix.dashboard.models.Company"/>
-        <mapping class="cr.pernix.dashboard.models.CustomerSatisfaction"/>
+        <mapping class="cr.pernix.dashboard.models.Answer"/>
         <mapping class="cr.pernix.dashboard.models.Manager"/>
         <mapping class="cr.pernix.dashboard.models.Metric"/>
         <mapping class="cr.pernix.dashboard.models.User"/>
         <mapping class="cr.pernix.dashboard.models.UserType"/>
+        <mapping class="cr.pernix.dashboard.models.Survey"/>
     </session-factory>
 </hibernate-configuration>

@@ -14,18 +14,18 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
-@Table(name = "CustomerSatisfaction", schema = "public")
+@Table(name = "Answer", schema = "public")
 @XmlRootElement
-public class CustomerSatisfaction implements java.io.Serializable {
+public class Answer implements java.io.Serializable {
     
     private static final long serialVersionUID = -2233569769684926099L;
     private int id;
     private int value;
     private Date timestamp;
     private Metric metric;
-    private Manager manager;
+    private User user;
 
-    public CustomerSatisfaction() {
+    public Answer() {
     }
 
     @Id
@@ -68,13 +68,13 @@ public class CustomerSatisfaction implements java.io.Serializable {
     }
     
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "manager_id", nullable = false)
-    public Manager getManager() {
-      return this.manager;
+    @JoinColumn(name = "user_id", nullable = false)
+    public User getUser() {
+      return this.user;
     }
 
-    public void setManager(Manager manager) {
-      this.manager = manager;
+    public void setUser(User user) {
+      this.user = user;
     }
 
     @Override
@@ -84,7 +84,7 @@ public class CustomerSatisfaction implements java.io.Serializable {
         if (o == null || getClass() != o.getClass())
             return false;
 
-        CustomerSatisfaction customerSatisfaction = (CustomerSatisfaction) o;
+        Answer customerSatisfaction = (Answer) o;
         if (id != customerSatisfaction.id)
             return false;
         return true;

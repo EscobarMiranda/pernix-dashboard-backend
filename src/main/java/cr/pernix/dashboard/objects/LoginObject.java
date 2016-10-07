@@ -3,7 +3,43 @@ package cr.pernix.dashboard.objects;
 public class LoginObject {
     private String email;
     private String password;
+    private String name;
+    private String lastname;
+    private boolean active;
+    private int user_type_id;
     
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public int getUser_type_id() {
+        return user_type_id;
+    }
+
+    public void setUser_type_id(int user_type_id) {
+        this.user_type_id = user_type_id;
+    }
+
     public String getEmail() {
         return email;
     }

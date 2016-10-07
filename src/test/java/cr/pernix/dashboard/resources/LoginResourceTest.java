@@ -20,6 +20,10 @@ import cr.pernix.dashboard.services.ManagerService;
 import cr.pernix.dashboard.services.UserService;
 import cr.pernix.dashboard.services.UserTypeService;
 
+/**
+ * @author LSerrano
+ *
+ */
 public class LoginResourceTest extends JerseyTest {
 
     private static Logger LOG = Logger.getLogger(UserResourceTest.class);
@@ -29,7 +33,7 @@ public class LoginResourceTest extends JerseyTest {
     private final String EMAIL = "kescobar@pernix.cr";
     private final String PASSWORD = "password";
     private final boolean ACTIVE = true;
-    private final String USERTYPENAME = "admintest";
+    private final String USERTYPENAME = "User";
 
     private UserService userService = UserService.getInstance();
     private UserTypeService userTypeService = UserTypeService.getInstance();
@@ -83,7 +87,7 @@ public class LoginResourceTest extends JerseyTest {
 
     @Override
     protected Application configure() {
-        return new ResourceConfig(LoginResourse.class);
+        return new ResourceConfig(LoginResource.class);
     }
 
     @Test
@@ -98,5 +102,20 @@ public class LoginResourceTest extends JerseyTest {
         User user = response.readEntity(User.class);
         Assert.assertNotNull(user);
         deleteAll(testUser);
+    }
+    
+    @Test
+    public void testLogin2() {
+        insertTestUserType();
+        LoginObject login = new LoginObject();
+        login.setEmail("lserrano@pernix-solutions.com");
+        login.setName("Luis");
+        login.setLastname("Serrano");
+        login.setActive(true);
+        String path = "login";
+        final Response response = target().path(String.format(path)).request().post(Entity.json(login));
+        Assert.assertEquals(200, response.getStatus());
+        User user = response.readEntity(User.class);
+        Assert.assertNotNull(user);
     }
 }

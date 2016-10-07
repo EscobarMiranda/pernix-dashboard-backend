@@ -101,7 +101,7 @@ public class User implements java.io.Serializable {
     }
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "manager_id", nullable = false)
+    @JoinColumn(name = "manager_id", nullable = true)
     public Manager getManager() {
         return this.manager;
     }

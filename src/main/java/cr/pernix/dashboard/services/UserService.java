@@ -56,7 +56,6 @@ public class UserService {
             userObject.setName(user.getName());
             userObject.setLastname(user.getLastname());
             userObject.setEmail(user.getEmail());
-            userObject.setPassword(user.getPassword());
             userObject.setUserType(user.getUserType());
             users.add(userObject);
         }
@@ -73,15 +72,13 @@ public class UserService {
     }
 
     public void save(User user) {
-        user.setPassword(generatePassword());
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
         session.saveOrUpdate(user);
         transaction.commit();
         MailService.getInstance().sendEmail(user.getEmail(), mailProperties.getValue("mail.new.user.subject"),
                 ResourceManager.getStringFromTemplate("MailTemplate.html").replace("{%body%}",
-                        mailProperties.getValue("mail.new.user.body").replace("{%email%}", user.getEmail())
-                                .replace("{%password%}", user.getPassword())));
+                        mailProperties.getValue("mail.new.user.body").replace("{%email%}", user.getEmail())));
     }
 
     public void delete(int id) {
@@ -103,10 +100,6 @@ public class UserService {
                     ResourceManager.getStringFromTemplate("MailTemplate.html").replace("{%body%}",
                             mailProperties.getValue("mail.delete.user.body")));
         }
-    }
-
-    public String generatePassword() {
-        return new BigInteger(40, new SecureRandom()).toString(32);
     }
 
 }

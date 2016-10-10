@@ -60,6 +60,27 @@ public class UserTypeService {
         return userType;
     }
     
+    public UserType getByName(String name) {
+        UserType userType = new UserType();
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction transaction = session.beginTransaction();
+        transaction.begin();
+        if (transaction.getStatus().equals(TransactionStatus.NOT_ACTIVE))
+            LOGGER.debug(" >>> Transaction close.");
+        StringBuilder query = new StringBuilder("from UserType ");
+        if(name != null){
+            query.append("where name = '" + String.format(name) + "'"); 
+        }
+        Query result = session.createQuery(query.toString());
+        @SuppressWarnings("unchecked")
+        List<UserType> allTypes = result.list();
+        if (allTypes.size() > 0) {
+            userType = (UserType)allTypes.get(0);
+        }
+        transaction.commit();
+        return userType;
+    }
+    
     public void save(UserType userType) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();

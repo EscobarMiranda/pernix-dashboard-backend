@@ -66,6 +66,18 @@ public class UserTypeResourceTest extends JerseyTest {
     }
 
     @Test
+    public void testGetByName() {
+        List<UserType> testUserType = insertTestUserTypes(1);
+        Assert.assertTrue(testUserType.size() > 0);
+        UserType toCompare = testUserType.get(0);
+        final Response response = target().path(String.format("userType/byName/" + toCompare.getName())).request().get();
+        Assert.assertEquals(200, response.getStatus());
+        UserType userType = response.readEntity(UserType.class);
+        Assert.assertTrue("Object do not match", userType.equals(toCompare));
+        userTypeService.delete(toCompare.getId());
+    }
+    
+    @Test
     public void testDelete() {
         List<UserType> testUserType = insertTestUserTypes(1);
         Assert.assertTrue(testUserType.size() > 0);

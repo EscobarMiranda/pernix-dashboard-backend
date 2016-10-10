@@ -35,6 +35,14 @@ public class UserTypeResource {
         return Response.ok(userType).header("Access-Control-Allow-Origin", "*").build();
     }
 
+    @GET
+    @Path("byName/{name}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response get(@PathParam("name") String name) throws Exception {
+        UserType userType = UserTypeService.getInstance().getByName(name);
+        return Response.ok(userType).header("Access-Control-Allow-Origin", "*").build();
+    }
+    
     @POST
     public Response create(UserType userType) throws Exception {
         UserTypeService.getInstance().save(userType);

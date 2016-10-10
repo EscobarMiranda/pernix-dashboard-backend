@@ -16,7 +16,6 @@ import cr.pernix.dashboard.utils.HibernateUtil;
 public class LoginService {
     private static volatile LoginService instance = null;
     private static final Log LOGGER = LogFactory.getLog(UserService.class);
-    private UserService userService = UserService.getInstance();
 
     private LoginService() {
     }
@@ -29,6 +28,7 @@ public class LoginService {
     }
 
     public User login(LoginObject loginObject) {
+        User user = new User();
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transaction = session.getTransaction();
         transaction.begin();
@@ -40,11 +40,18 @@ public class LoginService {
         List<User> allUsers = query.list();
         transaction.commit();
         if (allUsers.size() > 0) {
-            User user = (User)allUsers.get(0);
-            if (user.getPassword().equals(loginObject.getPassword())) {
-                return user;
-            }
+            user = (User)allUsers.get(0);
         }
-        return null;
+        else{  
+            User userTmp = new User();
+            userTmp.setActive(true);
+            userTmp.setEmail(loginObject.getEmail());
+            userTmp.setName(loginObject.getName());
+            userTmp.setLastname(loginObject.getLastname());
+            userTmp.setUserType(UserTypeService.getInstance().getByName("User"));
+            UserService.getInstance().save(userTmp);
+            user = userTmp;
+        }
+        return user;
     }
 }

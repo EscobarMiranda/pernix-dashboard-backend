@@ -21,7 +21,6 @@ public class User implements java.io.Serializable {
     private String email;
     private String lastname;
     private String name;
-    private String password;
     private boolean active;
     private UserType usertype;
     private Manager manager;
@@ -69,16 +68,6 @@ public class User implements java.io.Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    @Column(name = "password")
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
     
     @Column (name = "active")

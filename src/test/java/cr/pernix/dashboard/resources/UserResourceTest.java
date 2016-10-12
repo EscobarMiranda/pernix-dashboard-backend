@@ -30,7 +30,6 @@ public class UserResourceTest extends JerseyTest {
     private final String NAME = "Kevin";
     private final String LASTNAME = "Escobar Miranda";
     private final String EMAIL = "kescobar@pernix.cr";
-    private final String PASSWORD = "password";
     private final boolean ACTIVE = true;
     private final String USERTYPENAME = "admintest";
 
@@ -54,7 +53,6 @@ public class UserResourceTest extends JerseyTest {
             testUser.setName(NAME);
             testUser.setLastname(LASTNAME);
             testUser.setEmail(EMAIL);
-            testUser.setPassword(PASSWORD);
             testUser.setActive(ACTIVE);
             testUser.setUserType(insertTestUserType());
             testUser.setManager(insertTestManager());

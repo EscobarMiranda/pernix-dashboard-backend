@@ -1,0 +1,1 @@
+insert into usertype (id, name) values (1,'User');

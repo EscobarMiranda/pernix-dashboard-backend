@@ -1,6 +1,6 @@
 package cr.pernix.dashboard.resources;
 
-import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
@@ -12,9 +12,8 @@ import cr.pernix.dashboard.services.LoginService;
 
 @Path("login")
 public class LoginResource {
-    
-    @GET
-    @Path("/{name}")
+
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUser(LoginObject loginObject) throws Exception {
         User user = LoginService.getInstance().login(loginObject);

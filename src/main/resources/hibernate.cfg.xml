@@ -5,9 +5,9 @@
 <hibernate-configuration>
     <session-factory>
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.password">Pernix123.</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/dashboard</property>
-        <property name="hibernate.connection.username">dashboard</property>
+        <property name="hibernate.connection.password">vepXx5BJlmEgTZG6IuVZQyOrKY</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://ec2-54-227-250-80.compute-1.amazonaws.com:5432/dbt4se76psejq2</property>
+        <property name="hibernate.connection.username">fwzmcdyodrwotj</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
         <property name="hibernate.search.autoregister_listeners">false</property>
         <property name="hibernate.show_sql">true</property>

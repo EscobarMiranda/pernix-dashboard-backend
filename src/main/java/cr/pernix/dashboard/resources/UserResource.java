@@ -47,10 +47,10 @@ public class UserResource {
         return Response.ok().header("Access-Control-Allow-Origin", "*").build();
     }
 
-    @DELETE
-    @Path("/{id}")
-    public Response deleteUser(@PathParam("id") int id) throws Exception {
-        UserService.getInstance().delete(id);
+    @PUT
+    @Path("/changeState")
+    public Response changeState(User user) throws Exception {
+        UserService.getInstance().changeState(user);
         return Response.ok().header("Access-Control-Allow-Origin", "*").build();
     }
 }

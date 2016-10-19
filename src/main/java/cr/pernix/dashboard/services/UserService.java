@@ -1,7 +1,5 @@
 package cr.pernix.dashboard.services;
 
-import java.math.BigInteger;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,11 +74,13 @@ public class UserService {
         Transaction transaction = session.beginTransaction();
         session.saveOrUpdate(user);
         transaction.commit();
-        MailService.getInstance().sendEmail(user.getEmail(), mailProperties.getValue("mail.new.user.subject"),
-                ResourceManager.getStringFromTemplate("MailTemplate.html").replace("{%body%}",
-                        mailProperties.getValue("mail.new.user.body").replace("{%email%}", user.getEmail())));
     }
-
+    
+    public void changeState(User user) {
+        user.setActive(!user.getActive());
+        save(user);
+    }
+    
     public void delete(int id) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         User user = get(id);
@@ -96,9 +96,6 @@ public class UserService {
                 LOGGER.debug(" >>> Transaction close.");
             session.delete(user);
             transaction.commit();
-            MailService.getInstance().sendEmail(user.getEmail(), mailProperties.getValue("mail.delete.user.subject"),
-                    ResourceManager.getStringFromTemplate("MailTemplate.html").replace("{%body%}",
-                            mailProperties.getValue("mail.delete.user.body")));
         }
     }
 

@@ -11,6 +11,7 @@ import org.hibernate.Transaction;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
 
 import cr.pernix.dashboard.models.Metric;
+import cr.pernix.dashboard.objects.AnswerObject;
 import cr.pernix.dashboard.utils.HibernateUtil;
 
 public class MetricService {
@@ -50,6 +51,29 @@ public class MetricService {
         }
         return metrics;
     }
+    
+    public List<Metric> getBySurvey(int surveyId) {
+        List<Metric> list = new ArrayList<>();
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction transaction = session.getTransaction();
+        transaction.begin();
+        if (transaction.getStatus().equals(TransactionStatus.NOT_ACTIVE))
+            LOGGER.debug(" >>> Transaction close.");
+        Query query = session.createSQLQuery("select id, name, description, active from Metric where survey_id = :surveyId");
+        query.setParameter("surveyId", surveyId);
+        @SuppressWarnings("unchecked")
+        List<Object[]> allMetrics = query.list();
+        transaction.commit();
+        for (Object metricObject[] : allMetrics) {
+            Metric metric = new Metric();
+            metric.setId((int)metricObject[0]);
+            metric.setName((String)metricObject[1]);
+            metric.setDescription((String)metricObject[2]);
+            metric.setActive((boolean)metricObject[3]);
+            list.add(metric);
+        }
+        return list;
+    }
 
     public Metric get(int id) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -65,6 +89,11 @@ public class MetricService {
         Transaction transaction = session.beginTransaction();
         session.saveOrUpdate(metric);
         transaction.commit();
+    }
+    
+    public void changeState(Metric metric) {
+        metric.setActive(!metric.getActive());
+        save(metric);
     }
 
     public void delete(int id) {

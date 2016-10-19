@@ -71,7 +71,7 @@ public class UserResourceTest extends JerseyTest {
         managerService.save(testManager);
         return testManager;
     }
-    
+
     private Company insertTestCompany() {
         Company company = new Company();
         company.setName("Test metric");
@@ -119,13 +119,18 @@ public class UserResourceTest extends JerseyTest {
     }
 
     @Test
-    public void testDeleteUser() {
+    public void testChangeState() {
         List<User> testUser = insertTestUsers(1);
         Assert.assertTrue(testUser.size() > 0);
-        User toDelete = testUser.get(0);
-        String path = "user/%d";
-        final Response response = target().path(String.format(path, toDelete.getId())).request().delete();
+        User toChangeState = testUser.get(0);
+        Response response = target().path("user/changeState").request().put(Entity.json(toChangeState), Response.class);
         Assert.assertEquals(200, response.getStatus());
+        User user = userService.get(toChangeState.getId());
+        Assert.assertFalse(user.getActive());
+        response = target().path("user/changeState").request().put(Entity.json(user), Response.class);
+        Assert.assertEquals(200, response.getStatus());
+        user = userService.get(user.getId());
+        Assert.assertTrue(user.getActive());
         deleteAll(testUser);
     }
 

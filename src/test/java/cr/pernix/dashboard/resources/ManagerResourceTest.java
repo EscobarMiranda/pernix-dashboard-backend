@@ -88,13 +88,18 @@ public class ManagerResourceTest extends JerseyTest {
     }
 
     @Test
-    public void testDelete() {
+    public void testChangeState() {
         List<Manager> testManager = insertTestManagers(1);
         Assert.assertTrue(testManager.size() > 0);
-        Manager toDelete = testManager.get(0);
-        String path = "manager/%d";
-        final Response response = target().path(String.format(path, toDelete.getId())).request().delete();
+        Manager toChangeState = testManager.get(0);
+        Response response = target().path("manager/changeState").request().put(Entity.json(toChangeState), Response.class);
         Assert.assertEquals(200, response.getStatus());
+        Manager manager = managerService.get(toChangeState.getId());
+        Assert.assertFalse(manager.getActive());
+        response = target().path("manager/changeState").request().put(Entity.json(manager), Response.class);
+        Assert.assertEquals(200, response.getStatus());
+        manager = managerService.get(manager.getId());
+        Assert.assertTrue(manager.getActive());
         deleteAll(testManager);
     }
 

@@ -11,6 +11,7 @@ import org.hibernate.Transaction;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
 
 import cr.pernix.dashboard.models.Company;
+import cr.pernix.dashboard.models.Manager;
 import cr.pernix.dashboard.utils.HibernateUtil;
 
 public class CompanyService {
@@ -65,6 +66,12 @@ public class CompanyService {
         Transaction transaction = session.beginTransaction();
         session.saveOrUpdate(company);
         transaction.commit();
+    }
+    
+
+    public void changeState(Company company) {
+        company.setActive(!company.getActive());
+        save(company);
     }
 
     public void delete(int id) {

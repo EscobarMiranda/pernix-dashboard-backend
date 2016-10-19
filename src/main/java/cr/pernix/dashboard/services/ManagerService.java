@@ -67,6 +67,12 @@ public class ManagerService {
         transaction.commit();
     }
 
+
+    public void changeState(Manager manager) {
+        manager.setActive(!manager.getActive());
+        save(manager);
+    }
+
     public void delete(int id) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         Manager manager = get(id);

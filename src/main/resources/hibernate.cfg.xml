@@ -28,5 +28,6 @@
         <mapping class="cr.pernix.dashboard.models.User"/>
         <mapping class="cr.pernix.dashboard.models.UserType"/>
         <mapping class="cr.pernix.dashboard.models.Survey"/>
+        <mapping class="cr.pernix.dashboard.models.Project"/>
     </session-factory>
 </hibernate-configuration>

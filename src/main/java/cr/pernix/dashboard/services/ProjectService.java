@@ -52,6 +52,25 @@ public class ProjectService {
         return projects;
     }
 
+    public List<Project> getByUser(int userId) {
+        List<Project> projects = new ArrayList<Project>();
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction transaction = session.getTransaction();
+        transaction.begin();
+        if (transaction.getStatus().equals(TransactionStatus.NOT_ACTIVE))
+            LOGGER.debug(" >>> Transaction close.");
+        Query query = session.createQuery("from Project where user_id = :userId");
+        query.setParameter("userId", userId);
+        @SuppressWarnings("unchecked")
+        List<Object[]> allCostumerSatisfaction = query.list();
+        transaction.commit();
+        for (Object object : allCostumerSatisfaction) {
+            Project project = (Project) object;
+            projects.add(project);
+        }
+        return projects;
+    }
+    
     public Project get(int id) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
@@ -66,6 +85,11 @@ public class ProjectService {
         Transaction transaction = session.beginTransaction();
         session.saveOrUpdate(project);
         transaction.commit();
+    }
+    
+    public void changeState(Project project) {
+        project.setActive(!project.getActive());
+        save(project);
     }
 
     public void delete(int id) {

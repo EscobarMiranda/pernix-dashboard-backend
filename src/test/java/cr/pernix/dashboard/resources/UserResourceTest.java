@@ -110,7 +110,7 @@ public class UserResourceTest extends JerseyTest {
         List<User> testUser = insertTestUsers(1);
         Assert.assertTrue(testUser.size() > 0);
         User toCompare = testUser.get(0);
-        String path = "user/%d";
+        final String path = "user/%d";
         final Response response = target().path(String.format(path, toCompare.getId())).request().get();
         Assert.assertEquals(200, response.getStatus());
         User user = response.readEntity(User.class);

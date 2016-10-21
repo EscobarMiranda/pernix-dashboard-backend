@@ -63,7 +63,7 @@ public class CompanyResourceTest extends JerseyTest {
         List<Company> testCompany = insertTestCompanies(1);
         Assert.assertTrue(testCompany.size() > 0);
         Company toCompare = testCompany.get(0);
-        String path = "company/%d";
+        final String path = "company/%d";
         final Response response = target().path(String.format(path, toCompare.getId())).request().get();
         Assert.assertEquals(200, response.getStatus());
         Company company = response.readEntity(Company.class);

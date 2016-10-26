@@ -67,7 +67,7 @@ public class LoginResourceTest extends JerseyTest {
         login.setName(NAME);
         login.setLastname(LASTNAME);
         login.setUser_type_id(UserTmp.getUserType().getId());
-        String path = "login";
+        final String path = "login";
         final Response response = target().path(String.format(path)).request().post(Entity.json(login));
         Assert.assertEquals(200, response.getStatus());
         User user = response.readEntity(User.class);

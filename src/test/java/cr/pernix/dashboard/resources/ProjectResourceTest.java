@@ -15,27 +15,28 @@ import org.jboss.logging.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 
+import cr.pernix.dashboard.models.OnTrack;
 import cr.pernix.dashboard.models.Project;
 import cr.pernix.dashboard.models.User;
 import cr.pernix.dashboard.models.UserType;
+import cr.pernix.dashboard.services.OnTrackService;
 import cr.pernix.dashboard.services.ProjectService;
 import cr.pernix.dashboard.services.UserService;
 import cr.pernix.dashboard.services.UserTypeService;
 
 public class ProjectResourceTest extends JerseyTest {
 
-private static Logger LOG = Logger.getLogger(ProjectResourceTest.class);
-    
+    private static Logger LOG = Logger.getLogger(ProjectResourceTest.class);
+
     private final String NAME = "Project Test";
     private final String DESCRIPTION = "Description test";
-    private final Date START = new Date(2016, 9, 26); 
-    private final Date END = new Date(2016, 9, 26);
-    private final Date LASTDEMO = new Date(2016, 9, 26);
+    private final Date START = new Date("2016/9/26");
+    private final Date END = new Date("2016/9/26");
+    private final Date LASTDEMO = new Date("2016/9/26");
     private final String LASTUPDATE = "Update test";
     private final float PERCENTAGE = (float) 80.5;
-    private final boolean ONTRACK = true;
     private final boolean ACTIVATE = true;
-    
+
     private final String USER_NAME = "Kevin";
     private final String LASTNAME = "Escobar Miranda";
     private final String EMAIL = "kescobar@pernix.cr";
@@ -45,27 +46,35 @@ private static Logger LOG = Logger.getLogger(ProjectResourceTest.class);
     private UserService userService = UserService.getInstance();
     private UserTypeService userTypeService = UserTypeService.getInstance();
     private ProjectService projectService = ProjectService.getInstance();
-    
+    private OnTrackService onTrackService = OnTrackService.getInstance();
+
     private List<Project> insertTestProjects(int count) {
         List<Project> testProjects = new ArrayList<Project>();
         for (; count > 0; count--) {
-            Project projectObject = new Project();
-            projectObject.setName(NAME);
-            projectObject.setDescription(DESCRIPTION);
-            projectObject.setStartDate(START);
-            projectObject.setEndDate(END);
-            projectObject.setLastDemo(LASTDEMO);
-            projectObject.setLastUpdate(LASTUPDATE);
-            projectObject.setPercentage(PERCENTAGE);
-            projectObject.setOnTrack(ONTRACK);
-            projectObject.setActivate(ACTIVATE);
-            projectObject.setUser(insertTestUser());
-            projectService.save(projectObject);
-            testProjects.add(projectObject);
+            Project project = new Project();
+            project.setName(NAME);
+            project.setDescription(DESCRIPTION);
+            project.setStartDate(START);
+            project.setEndDate(END);
+            project.setLastDemo(LASTDEMO);
+            project.setLastUpdate(LASTUPDATE);
+            project.setPercentage(PERCENTAGE);
+            project.setOnTrack(insertTestOnTrack());
+            project.setActive(ACTIVATE);
+            project.setUser(insertTestUser());
+            projectService.save(project);
+            testProjects.add(project);
         }
         return testProjects;
     }
     
+    private OnTrack insertTestOnTrack() {
+        OnTrack testOnTrack = new OnTrack();
+        testOnTrack.setName(NAME);
+        onTrackService.save(testOnTrack);
+        return testOnTrack;
+    }
+
     private UserType insertTestUserType() {
         UserType testUserType = new UserType();
         testUserType.setName(USERTYPENAME);
@@ -86,7 +95,9 @@ private static Logger LOG = Logger.getLogger(ProjectResourceTest.class);
 
     private void deleteAll(List<Project> projectList) {
         for (Project project : projectList) {
+            System.out.println(project.getId());
             projectService.delete(project.getId());
+            onTrackService.delete(project.getOnTrack().getId());
             userService.delete(project.getUser().getId());
             userTypeService.delete(project.getUser().getUserType().getId());
         }
@@ -96,7 +107,7 @@ private static Logger LOG = Logger.getLogger(ProjectResourceTest.class);
     protected Application configure() {
         return new ResourceConfig(ProjectResource.class);
     }
-    
+
     @Test
     public void testGetAll() {
         List<Project> testProjects = insertTestProjects(5);
@@ -108,17 +119,31 @@ private static Logger LOG = Logger.getLogger(ProjectResourceTest.class);
         Assert.assertEquals(testProjects.size(), projectsList.size());
         deleteAll(testProjects);
     }
-    
+
+    @Test
+    public void testGetByUser() {
+        List<Project> testProjects = insertTestProjects(5);
+        Assert.assertTrue(testProjects.size() == 5);
+        int userId = testProjects.get(0).getUser().getId();
+        final String path = "project/byUser/%d";
+        final Response response = target().path(String.format(path, userId)).request().get();
+        Assert.assertEquals(200, response.getStatus());
+        List<Project> projectsList = response.readEntity(new GenericType<List<Project>>() {
+        });
+        Assert.assertTrue(projectsList.size() > 0);
+        deleteAll(testProjects);
+    }
+
     @Test
     public void testGetSingleProject() {
         List<Project> testProject = insertTestProjects(1);
         Assert.assertTrue(testProject.size() > 0);
         Project toCompare = testProject.get(0);
-        String path = "project/%d";
+        final String path = "project/%d";
         final Response response = target().path(String.format(path, toCompare.getId())).request().get();
         Assert.assertEquals(200, response.getStatus());
         Project project = response.readEntity(Project.class);
-        Assert.assertTrue("Object do not match", project.equals(toCompare));
+        Assert.assertNotNull(project);
         deleteAll(testProject);
     }
 
@@ -127,9 +152,25 @@ private static Logger LOG = Logger.getLogger(ProjectResourceTest.class);
         List<Project> testProject = insertTestProjects(1);
         Assert.assertTrue(testProject.size() > 0);
         Project toDelete = testProject.get(0);
-        String path = "project/%d";
+        final String path = "project/%d";
         final Response response = target().path(String.format(path, toDelete.getId())).request().delete();
         Assert.assertEquals(200, response.getStatus());
+        deleteAll(testProject);
+    }
+
+    @Test
+    public void testChangeState() {
+        List<Project> testProject = insertTestProjects(1);
+        Assert.assertTrue(testProject.size() > 0);
+        Project toChangeState = testProject.get(0);
+        Response response = target().path("project/changeState").request().put(Entity.json(toChangeState), Response.class);
+        Assert.assertEquals(200, response.getStatus());
+        Project project = projectService.get(toChangeState.getId());
+        Assert.assertFalse(project.getActive());
+        response = target().path("project/changeState").request().put(Entity.json(project), Response.class);
+        Assert.assertEquals(200, response.getStatus());
+        project = projectService.get(project.getId());
+        Assert.assertTrue(project.getActive());
         deleteAll(testProject);
     }
 

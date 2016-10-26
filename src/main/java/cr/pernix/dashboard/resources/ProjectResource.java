@@ -28,6 +28,16 @@ public class ProjectResource {
     }
     
     @GET
+    @Path("/byUser/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getByUser(@PathParam("id") int id) throws Exception {
+        List<Project> result = ProjectService.getInstance().getByUser(id);
+        GenericEntity<List<Project>> list = new GenericEntity<List<Project>>(result) {
+        };
+        return Response.ok(list).header("Access-Control-Allow-Origin", "*").build();
+    }
+
+    @GET
     @Path("/{id}")
     public Response get(@PathParam("id") int id) throws Exception {
         Project project = ProjectService.getInstance().get(id);
@@ -43,6 +53,13 @@ public class ProjectResource {
     @PUT
     public Response update(Project project) throws Exception {
         ProjectService.getInstance().save(project);
+        return Response.ok().header("Access-Control-Allow-Origin", "*").build();
+    }
+    
+    @PUT
+    @Path("/changeState")
+    public Response changeState(Project project) throws Exception {
+        ProjectService.getInstance().changeState(project);
         return Response.ok().header("Access-Control-Allow-Origin", "*").build();
     }
 

@@ -122,7 +122,7 @@ public class AnswerResourceTest extends JerseyTest {
             userTypeService.delete(customerSatisfaction.getUser().getUserType().getId());
             managerService.delete(customerSatisfaction.getUser().getManager().getId());
             companyService.delete(customerSatisfaction.getUser().getManager().getCompany().getId());
-
+            surveyService.delete(customerSatisfaction.getMetric().getSurvey().getId());
         }
     }
 
@@ -161,7 +161,7 @@ public class AnswerResourceTest extends JerseyTest {
     public void testGetCompany() {
         List<Answer> testCostumerSatisfaction = insertTestCostumerSatisfaction(2);
         Assert.assertTrue(testCostumerSatisfaction.size() == 2);
-        int companyId = testCostumerSatisfaction.get(0).getUser().getManager().getCompany().getId();
+        final int companyId = testCostumerSatisfaction.get(0).getUser().getManager().getCompany().getId();
         final Response response = target().path("answer/company/" + companyId).request().get();
         Assert.assertEquals(200, response.getStatus());
         List<Answer> costumerSatisfactionList = response
@@ -175,7 +175,7 @@ public class AnswerResourceTest extends JerseyTest {
     public void testGetUser() {
         List<Answer> testCostumerSatisfaction = insertTestCostumerSatisfaction(2);
         Assert.assertTrue(testCostumerSatisfaction.size() == 2);
-        int userId = testCostumerSatisfaction.get(0).getUser().getId();
+        final int userId = testCostumerSatisfaction.get(0).getUser().getId();
         final Response response = target().path("answer/user/" + userId).request().get();
         Assert.assertEquals(200, response.getStatus());
         List<Answer> costumerSatisfactionList = response
@@ -190,7 +190,7 @@ public class AnswerResourceTest extends JerseyTest {
         List<Answer> testCostumerSatisfaction = insertTestCostumerSatisfaction(1);
         Assert.assertTrue(testCostumerSatisfaction.size() > 0);
         Answer toCompare = testCostumerSatisfaction.get(0);
-        String path = "answer/%d";
+        final String path = "answer/%d";
         final Response response = target().path(String.format(path, toCompare.getId())).request().get();
         Assert.assertEquals(200, response.getStatus());
         Answer customerSatisfaction = response.readEntity(Answer.class);
@@ -204,7 +204,7 @@ public class AnswerResourceTest extends JerseyTest {
         List<Answer> testCostumerSatisfaction = insertTestCostumerSatisfaction(1);
         Assert.assertTrue(testCostumerSatisfaction.size() > 0);
         Answer toDelete = testCostumerSatisfaction.get(0);
-        String path = "answer/%d";
+        final String path = "answer/%d";
         final Response response = target().path(String.format(path, toDelete.getId())).request().delete();
         Assert.assertEquals(200, response.getStatus());
         deleteAll(testCostumerSatisfaction);

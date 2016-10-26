@@ -65,7 +65,7 @@
         <filter-class>cr.pernix.dashboard.utils.AuthenticationFilter</filter-class>
         <init-param>
             <param-name>excludedPaths</param-name>
-            <param-value>/rest/login</param-value>
+            <param-value>/rest/login,/rest/survey/*,/rest/user/*,/rest/metric/bySurvey/*,/rest/answer</param-value>
         </init-param>
     </filter>
     <filter-mapping>

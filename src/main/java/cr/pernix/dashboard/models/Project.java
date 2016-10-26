@@ -27,9 +27,9 @@ public class Project implements java.io.Serializable{
     private Date lastDemo;
     private String lastUpdate;
     private float percentage;
-    private boolean onTrack;
-    private boolean activate;
+    private boolean active;
     private User user;
+    private OnTrack ontrack;
     
     public Project() {
     }
@@ -100,20 +100,12 @@ public class Project implements java.io.Serializable{
         this.percentage = percentage;
     }
     
-    @Column(name = "onTrack")
-    public boolean getOnTrack() {
-        return onTrack;
+    @Column(name = "active")
+    public boolean getActive() {
+        return active;
     }
-    public void setOnTrack(boolean onTrack) {
-        this.onTrack = onTrack;
-    }
-    
-    @Column(name = "activate")
-    public boolean getActivate() {
-        return activate;
-    }
-    public void setActivate(boolean activate) {
-        this.activate = activate;
+    public void setActive(boolean active) {
+        this.active = active;
     }
     
     @ManyToOne(fetch = FetchType.EAGER)
@@ -124,6 +116,16 @@ public class Project implements java.io.Serializable{
 
     public void setUser(User user) {
         this.user = user;
+    }
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "on_track_id", nullable = false)
+    public OnTrack getOnTrack() {
+        return this.ontrack;
+    }
+
+    public void setOnTrack(OnTrack onTrack) {
+        this.ontrack = onTrack;
     }
     
     @Override

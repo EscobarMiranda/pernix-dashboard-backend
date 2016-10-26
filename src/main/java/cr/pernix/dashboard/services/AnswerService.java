@@ -1,6 +1,7 @@
 package cr.pernix.dashboard.services;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -118,10 +119,12 @@ public class AnswerService {
         return customerSatisfaction;
     }
 
-    public void save(Answer customerSatisfaction) {
+    public void save(Answer answer) {
+        System.out.println(new Date());
+        answer.setTimestamp(new Date());
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        session.saveOrUpdate(customerSatisfaction);
+        session.saveOrUpdate(answer);
         transaction.commit();
     }
 

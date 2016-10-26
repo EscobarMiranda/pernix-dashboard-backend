@@ -63,7 +63,7 @@ public class SurveyResourceTest extends JerseyTest {
         List<Survey> testSurvey = insertTestSurveys(1);
         Assert.assertTrue(testSurvey.size() > 0);
         Survey toCompare = testSurvey.get(0);
-        String path = "survey/%d";
+        final String path = "survey/%d";
         final Response response = target().path(String.format(path, toCompare.getId())).request().get();
         Assert.assertEquals(200, response.getStatus());
         Survey survey = response.readEntity(Survey.class);

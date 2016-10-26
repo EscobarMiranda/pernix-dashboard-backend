@@ -77,7 +77,7 @@ public class MetricResourceTest extends JerseyTest {
         List<Metric> testMetric = insertTestMetrics(5);
         Assert.assertTrue(testMetric.size() == 5);
         Survey survey = testMetric.get(0).getSurvey();
-        String path = "metric/bySurvey/%d";
+        final String path = "metric/bySurvey/%d";
         final Response response = target().path(String.format(path, survey.getId())).request().get();
         Assert.assertEquals(200, response.getStatus());
         List<Metric> metricsList = response.readEntity(new GenericType<List<Metric>>() {
@@ -91,7 +91,7 @@ public class MetricResourceTest extends JerseyTest {
         List<Metric> testMetric = insertTestMetrics(1);
         Assert.assertTrue(testMetric.size() > 0);
         Metric toCompare = testMetric.get(0);
-        String path = "metric/%d";
+        final String path = "metric/%d";
         final Response response = target().path(String.format(path, toCompare.getId())).request().get();
         Assert.assertEquals(200, response.getStatus());
         Metric metric = response.readEntity(Metric.class);

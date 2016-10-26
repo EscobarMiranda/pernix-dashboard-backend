@@ -79,7 +79,7 @@ public class ManagerResourceTest extends JerseyTest {
         List<Manager> testManager = insertTestManagers(1);
         Assert.assertTrue(testManager.size() > 0);
         Manager toCompare = testManager.get(0);
-        String path = "manager/%d";
+        final String path = "manager/%d";
         final Response response = target().path(String.format(path, toCompare.getId())).request().get();
         Assert.assertEquals(200, response.getStatus());
         Manager manager = response.readEntity(Manager.class);

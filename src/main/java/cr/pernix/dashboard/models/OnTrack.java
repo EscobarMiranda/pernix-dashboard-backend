@@ -14,23 +14,22 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
-@Table(name = "Survey", schema = "public")
+@Table(name = "OnTrack", schema = "public")
 @XmlRootElement
-public class Survey implements java.io.Serializable {
-
-    private static final long serialVersionUID = -3475745256322946264L;
+public class OnTrack implements java.io.Serializable {
+    
+    private static final long serialVersionUID = -2299646453001250553L;
     private int id;
     private String name;
-    private String description;
-    private boolean active;
-    private Set<Metric> metrics = new HashSet<Metric>(0);
+    private Set<Project> projects = new HashSet<Project>(0);
 
-    public Survey() {
+    public OnTrack() {
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
+
     public int getId() {
         return id;
     }
@@ -40,6 +39,7 @@ public class Survey implements java.io.Serializable {
     }
 
     @Column(name = "name")
+
     public String getName() {
         return name;
     }
@@ -48,31 +48,13 @@ public class Survey implements java.io.Serializable {
         this.name = name;
     }
     
-    @Column(name = "description")
-    public String getDescription() {
-        return description;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "onTrack")
+    public Set<Project> projects() {
+        return this.projects;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    
-    @Column(name = "active")
-    public boolean getActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "metric")
-    public Set<Metric> metrics() {
-        return this.metrics;
-    }
-
-    public void setMetrics(Set<Metric> metrics) {
-        this.metrics = metrics;
+    public void setProjects(Set<Project> projects) {
+        this.projects = projects;
     }
 
     @Override
@@ -82,8 +64,8 @@ public class Survey implements java.io.Serializable {
         if (o == null || getClass() != o.getClass())
             return false;
 
-        Survey survey = (Survey) o;
-        if (id != survey.id)
+        OnTrack onTrack = (OnTrack) o;
+        if (id != onTrack.id)
             return false;
         return true;
     }

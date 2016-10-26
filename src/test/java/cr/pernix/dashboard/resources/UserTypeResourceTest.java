@@ -57,7 +57,7 @@ public class UserTypeResourceTest extends JerseyTest {
         List<UserType> testUserType = insertTestUserTypes(1);
         Assert.assertTrue(testUserType.size() > 0);
         UserType toCompare = testUserType.get(0);
-        String path = "userType/%d";
+        final String path = "userType/%d";
         final Response response = target().path(String.format(path, toCompare.getId())).request().get();
         Assert.assertEquals(200, response.getStatus());
         UserType userType = response.readEntity(UserType.class);
@@ -82,7 +82,7 @@ public class UserTypeResourceTest extends JerseyTest {
         List<UserType> testUserType = insertTestUserTypes(1);
         Assert.assertTrue(testUserType.size() > 0);
         UserType toDelete = testUserType.get(0);
-        String path = "userType/%d";
+        final String path = "userType/%d";
         final Response response = target().path(String.format(path, toDelete.getId())).request().delete();
         Assert.assertEquals(200, response.getStatus());
         Assert.assertNull("Object still persist", userTypeService.get(toDelete.getId()));

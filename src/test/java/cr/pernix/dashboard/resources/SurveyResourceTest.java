@@ -19,6 +19,7 @@ import cr.pernix.dashboard.services.SurveyService;
 public class SurveyResourceTest extends JerseyTest {
 
     private final String NAME = "Survey test";
+    private final String DESCRIPTION = "Description survey test";
     private final boolean ACTIVE = true;
 
     private SurveyService surveyService = SurveyService.getInstance();
@@ -28,6 +29,7 @@ public class SurveyResourceTest extends JerseyTest {
         for (; count > 0; count--) {
             Survey testSurvey = new Survey();
             testSurvey.setName(NAME);
+            testSurvey.setDescription(DESCRIPTION);
             testSurvey.setActive(ACTIVE);
             surveyService.save(testSurvey);
             testSurveys.add(testSurvey);
@@ -55,7 +57,7 @@ public class SurveyResourceTest extends JerseyTest {
         List<Survey> metricsList = response.readEntity(new GenericType<List<Survey>>() {
         });
         Assert.assertEquals(testSurvey.size(), metricsList.size());
-        deleteAll(metricsList);
+        deleteAll(testSurvey);
     }
 
     @Test
@@ -63,7 +65,7 @@ public class SurveyResourceTest extends JerseyTest {
         List<Survey> testSurvey = insertTestSurveys(1);
         Assert.assertTrue(testSurvey.size() > 0);
         Survey toCompare = testSurvey.get(0);
-        String path = "survey/%d";
+        final String path = "survey/%d";
         final Response response = target().path(String.format(path, toCompare.getId())).request().get();
         Assert.assertEquals(200, response.getStatus());
         Survey survey = response.readEntity(Survey.class);

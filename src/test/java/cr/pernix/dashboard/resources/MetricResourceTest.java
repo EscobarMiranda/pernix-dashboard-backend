@@ -52,6 +52,7 @@ public class MetricResourceTest extends JerseyTest {
     private void deleteAll(List<Metric> metricList) {
         for (Metric metric : metricList) {
             metricService.delete(metric.getId());
+            surveyService.delete(metric.getSurvey().getId());
         }
     }
 
@@ -69,7 +70,7 @@ public class MetricResourceTest extends JerseyTest {
         List<Metric> metricsList = response.readEntity(new GenericType<List<Metric>>() {
         });
         Assert.assertEquals(testMetric.size(), metricsList.size());
-        deleteAll(metricsList);
+        deleteAll(testMetric);
     }
 
     @Test
@@ -83,7 +84,7 @@ public class MetricResourceTest extends JerseyTest {
         List<Metric> metricsList = response.readEntity(new GenericType<List<Metric>>() {
         });
         Assert.assertTrue(testMetric.size() > 0);
-        deleteAll(metricsList);
+        deleteAll(testMetric);
     }
 
     @Test

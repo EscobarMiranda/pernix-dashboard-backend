@@ -122,7 +122,7 @@ public class AnswerResourceTest extends JerseyTest {
             userTypeService.delete(customerSatisfaction.getUser().getUserType().getId());
             managerService.delete(customerSatisfaction.getUser().getManager().getId());
             companyService.delete(customerSatisfaction.getUser().getManager().getCompany().getId());
-
+            surveyService.delete(customerSatisfaction.getMetric().getSurvey().getId());
         }
     }
 

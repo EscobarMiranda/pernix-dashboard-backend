@@ -55,7 +55,7 @@ public class SurveyResourceTest extends JerseyTest {
         List<Survey> metricsList = response.readEntity(new GenericType<List<Survey>>() {
         });
         Assert.assertEquals(testSurvey.size(), metricsList.size());
-        deleteAll(metricsList);
+        deleteAll(testSurvey);
     }
 
     @Test

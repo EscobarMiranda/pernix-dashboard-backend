@@ -117,7 +117,7 @@ public class ProjectResourceTest extends JerseyTest {
         List<Project> projectsList = response.readEntity(new GenericType<List<Project>>() {
         });
         Assert.assertEquals(testProjects.size(), projectsList.size());
-        deleteAll(projectsList);
+        deleteAll(testProjects);
     }
 
     @Test
@@ -131,7 +131,7 @@ public class ProjectResourceTest extends JerseyTest {
         List<Project> projectsList = response.readEntity(new GenericType<List<Project>>() {
         });
         Assert.assertTrue(projectsList.size() > 0);
-        deleteAll(projectsList);
+        deleteAll(testProjects);
     }
 
     @Test

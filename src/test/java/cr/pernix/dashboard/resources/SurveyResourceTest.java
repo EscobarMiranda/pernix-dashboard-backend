@@ -19,6 +19,7 @@ import cr.pernix.dashboard.services.SurveyService;
 public class SurveyResourceTest extends JerseyTest {
 
     private final String NAME = "Survey test";
+    private final String DESCRIPTION = "Description survey test";
     private final boolean ACTIVE = true;
 
     private SurveyService surveyService = SurveyService.getInstance();
@@ -28,6 +29,7 @@ public class SurveyResourceTest extends JerseyTest {
         for (; count > 0; count--) {
             Survey testSurvey = new Survey();
             testSurvey.setName(NAME);
+            testSurvey.setDescription(DESCRIPTION);
             testSurvey.setActive(ACTIVE);
             surveyService.save(testSurvey);
             testSurveys.add(testSurvey);

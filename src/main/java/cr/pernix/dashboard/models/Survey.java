@@ -21,6 +21,7 @@ public class Survey implements java.io.Serializable {
     private static final long serialVersionUID = -3475745256322946264L;
     private int id;
     private String name;
+    private String description;
     private boolean active;
     private Set<Metric> metrics = new HashSet<Metric>(0);
 
@@ -45,6 +46,15 @@ public class Survey implements java.io.Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+    
+    @Column(name = "description")
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
     
     @Column(name = "active")

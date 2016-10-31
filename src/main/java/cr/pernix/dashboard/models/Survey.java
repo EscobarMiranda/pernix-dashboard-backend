@@ -23,6 +23,7 @@ public class Survey implements java.io.Serializable {
     private String name;
     private String description;
     private boolean active;
+    private boolean sendManagers;
     private Set<Metric> metrics = new HashSet<Metric>(0);
 
     public Survey() {
@@ -64,6 +65,15 @@ public class Survey implements java.io.Serializable {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+    
+    @Column(name = "sendManagers")
+    public boolean getSendManagers() {
+        return sendManagers;
+    }
+
+    public void setSendManagers(boolean sendManagers) {
+        this.sendManagers = sendManagers;
     }
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "metric")

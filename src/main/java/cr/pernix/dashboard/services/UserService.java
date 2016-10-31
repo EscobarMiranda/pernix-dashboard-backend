@@ -55,6 +55,7 @@ public class UserService {
             userObject.setLastname(user.getLastname());
             userObject.setEmail(user.getEmail());
             userObject.setUserType(user.getUserType());
+            userObject.setManager(user.getManager());
             users.add(userObject);
         }
         return users;

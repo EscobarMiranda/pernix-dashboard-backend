@@ -59,6 +59,27 @@ public class SurveyService {
         transaction.commit();
         return survey;
     }
+    
+
+    public List<Survey> getSurveysSendToManagers() {
+        List<Survey> list = new ArrayList<>();
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction transaction = session.getTransaction();
+        transaction.begin();
+        if (transaction.getStatus().equals(TransactionStatus.NOT_ACTIVE))
+            LOGGER.debug(" >>> Transaction close.");
+        Query query = session.createSQLQuery("select id, name, active, sendManagers from Survey where sendManagers = true");
+        @SuppressWarnings("unchecked")
+        List<Object[]> allSurveys = query.list();
+        transaction.commit();
+        for (Object metricObject[] : allSurveys) {
+            Survey survey = new Survey();
+            survey.setId((int)metricObject[0]);
+            survey.setName((String)metricObject[1]);
+            list.add(survey);
+        }
+        return list;
+    }
 
     public void save(Survey survey) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();

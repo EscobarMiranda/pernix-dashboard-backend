@@ -23,6 +23,7 @@ public class User implements java.io.Serializable {
     private static final long serialVersionUID = 7796949849496424702L;
     private int id;
     private String email;
+    private String password;
     private String lastname;
     private String name;
     private boolean active;
@@ -75,6 +76,14 @@ public class User implements java.io.Serializable {
         this.email = email;
     }
     
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Column (name = "active")
     public boolean getActive() {
         return active;

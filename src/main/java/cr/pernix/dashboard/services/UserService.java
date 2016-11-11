@@ -12,12 +12,10 @@ import org.hibernate.resource.transaction.spi.TransactionStatus;
 
 import cr.pernix.dashboard.models.User;
 import cr.pernix.dashboard.utils.HibernateUtil;
-import cr.pernix.dashboard.utils.ResourceManager;
 
 public class UserService {
     private static volatile UserService instance = null;
     private static final Log LOGGER = LogFactory.getLog(UserService.class);
-    private static final ResourceManager mailProperties = new ResourceManager("mail.properties");
 
     private UserService() {
 
@@ -54,6 +52,7 @@ public class UserService {
             userObject.setName(user.getName());
             userObject.setLastname(user.getLastname());
             userObject.setEmail(user.getEmail());
+            userObject.setPassword(user.getPassword());
             userObject.setUserType(user.getUserType());
             userObject.setManager(user.getManager());
             users.add(userObject);
@@ -76,12 +75,12 @@ public class UserService {
         session.saveOrUpdate(user);
         transaction.commit();
     }
-    
+
     public void changeState(User user) {
         user.setActive(!user.getActive());
         save(user);
     }
-    
+
     public void delete(int id) {
         Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         User user = get(id);

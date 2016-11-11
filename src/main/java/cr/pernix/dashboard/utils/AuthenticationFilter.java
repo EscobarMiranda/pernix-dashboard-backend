@@ -30,7 +30,7 @@ public class AuthenticationFilter implements javax.servlet.Filter {
         String path = ((HttpServletRequest) request).getRequestURI();
         // If the url is one of excluded paths, then just continue with next
         // filter
-        if (this.excludedPaths.contains(path)) {
+        if (this.excludedPaths.contains(path.replaceAll("[0-9]+","*"))) {
             LOGGER.info("Excluded end-point: " + path);
             filterChain.doFilter(request, response);
             return;

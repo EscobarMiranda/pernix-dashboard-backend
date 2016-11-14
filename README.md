@@ -18,14 +18,23 @@ Setup development environment
 Build the project
 -------------
 
- - Build the project using maven command:
+ - Build the project using maven command:  
 `mvn package`
 
- - Build the project using maven but without tests run: 
+ - Build the project using maven but without tests run:  
 `mvn package -Dmaven.test.skip=true`
 
 - In windows: 
 `mvn package "-Dmaven.test.skip=true"`
+
+
+Publish on heroku  
+-------------
+* `git checkout -b new-branch-name`  
+* Change database configuration in `src/main/resources/hibernate.cfg.xml`  
+* `git add .`  
+* `git commit -m "New Release <Date>"`  
+* `git push heroku new-branch-name:master -f`  
 
 ----------
 Crafted by:
